@@ -1,6 +1,7 @@
 aid: wegowise
 name: WegoWise
-description: 'The WegoWise API is built on REST '
+description: >-
+  The WegoWise API is built on REST.
 type: Index
 position: Consumer
 access: 3rd-Party
@@ -15,7 +16,8 @@ specificationVersion: '0.19'
 apis:
   - aid: wegowise:wegowise
     name: WegoWise
-    description: 'The WegoWise API is built on REST '
+    description: >-
+      The WegoWise API is built on REST.
     humanURL: ' https://www.wegowise.com/api'
     tags:
       - API
