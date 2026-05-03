@@ -1,0 +1,137 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "wegowise": "https://www.wegowise.com/vocab#",
+    "schema": "https://schema.org/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "gr": "http://purl.org/goodrelations/v1#",
+
+    "Building": {
+      "@id": "schema:LodgingBusiness",
+      "@type": "@id",
+      "description": "A building tracked in WegoWise for energy benchmarking"
+    },
+
+    "Meter": {
+      "@id": "wegowise:Meter",
+      "@type": "@id",
+      "description": "A utility meter measuring energy or water consumption at a building"
+    },
+
+    "RawDatapoint": {
+      "@id": "wegowise:RawDatapoint",
+      "@type": "@id",
+      "description": "A raw utility usage reading for a billing period"
+    },
+
+    "Development": {
+      "@id": "schema:RealEstateListing",
+      "@type": "@id",
+      "description": "A development grouping multiple buildings in a portfolio"
+    },
+
+    "Apartment": {
+      "@id": "schema:Accommodation",
+      "@type": "@id",
+      "description": "A residential apartment unit within a building"
+    },
+
+    "UtilityCompany": {
+      "@id": "schema:Organization",
+      "@type": "@id",
+      "description": "A utility company providing electric, gas, water, or other services"
+    },
+
+    "id": {
+      "@id": "schema:identifier",
+      "@type": "xsd:integer"
+    },
+
+    "name": {
+      "@id": "schema:name",
+      "@type": "xsd:string"
+    },
+
+    "address": {
+      "@id": "schema:streetAddress",
+      "@type": "xsd:string"
+    },
+
+    "city": {
+      "@id": "schema:addressLocality",
+      "@type": "xsd:string"
+    },
+
+    "state": {
+      "@id": "schema:addressRegion",
+      "@type": "xsd:string"
+    },
+
+    "zip": {
+      "@id": "schema:postalCode",
+      "@type": "xsd:string"
+    },
+
+    "gross_area": {
+      "@id": "schema:floorSize",
+      "@type": "xsd:decimal"
+    },
+
+    "year_built": {
+      "@id": "schema:yearBuilt",
+      "@type": "xsd:integer"
+    },
+
+    "number_of_units": {
+      "@id": "wegowise:numberOfUnits",
+      "@type": "xsd:integer"
+    },
+
+    "account_number": {
+      "@id": "schema:accountId",
+      "@type": "xsd:string"
+    },
+
+    "data_type": {
+      "@id": "wegowise:utilityType",
+      "@type": "xsd:string"
+    },
+
+    "start_date": {
+      "@id": "schema:startDate",
+      "@type": "xsd:date"
+    },
+
+    "end_date": {
+      "@id": "schema:endDate",
+      "@type": "xsd:date"
+    },
+
+    "total_charge": {
+      "@id": "schema:price",
+      "@type": "xsd:decimal"
+    },
+
+    "kwh": {
+      "@id": "wegowise:kilowattHours",
+      "@type": "xsd:decimal"
+    },
+
+    "btu": {
+      "@id": "wegowise:btu",
+      "@type": "xsd:decimal"
+    },
+
+    "gallons": {
+      "@id": "wegowise:gallons",
+      "@type": "xsd:decimal"
+    },
+
+    "EnergyBenchmarking": {
+      "@id": "wegowise:EnergyBenchmarking",
+      "@type": "@id",
+      "description": "The process of measuring and comparing a building's energy performance"
+    }
+  }
+}

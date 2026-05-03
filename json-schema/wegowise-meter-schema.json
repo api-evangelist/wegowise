@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api-evangelist.github.io/wegowise/json-schema/wegowise-meter-schema.json",
+  "title": "WegoWise Utility Meter",
+  "description": "JSON Schema for a utility meter record in the WegoWise platform tracking energy or water consumption.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer",
+      "description": "Unique meter identifier"
+    },
+    "account_number": {
+      "type": "string",
+      "description": "Utility account number for this meter"
+    },
+    "data_type": {
+      "type": "string",
+      "enum": ["Electric", "Gas", "Oil", "Water", "Steam", "Propane", "Solar", "Trash"],
+      "description": "Type of utility being measured"
+    },
+    "nickname": {
+      "type": "string",
+      "description": "Optional user-defined nickname for this meter"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Optional notes about this meter"
+    },
+    "utility_company_id": {
+      "type": "integer",
+      "description": "ID of the utility company providing this service"
+    },
+    "building_id": {
+      "type": "integer",
+      "description": "ID of the building this meter is associated with"
+    },
+    "apartment_id": {
+      "type": "integer",
+      "description": "ID of the apartment this meter is associated with (if applicable)"
+    },
+    "area_id": {
+      "type": "integer",
+      "description": "ID of the commercial area this meter is associated with (if applicable)"
+    },
+    "last_import_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date of the most recent automated data import"
+    }
+  },
+  "required": ["id", "account_number", "data_type"]
+}

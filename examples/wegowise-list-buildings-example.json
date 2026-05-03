@@ -1,0 +1,46 @@
+{
+  "title": "WegoWise List Buildings Example",
+  "description": "Example response from GET /api/v1/wego_pro/buildings",
+  "request": {
+    "method": "GET",
+    "url": "https://www.wegowise.com/api/v1/wego_pro/buildings",
+    "headers": {
+      "Accept": "application/json",
+      "Authorization": "OAuth oauth_consumer_key=\"...\", oauth_token=\"...\", oauth_signature_method=\"HMAC-SHA1\", oauth_timestamp=\"1746300000\", oauth_nonce=\"abc123\", oauth_version=\"1.0\", oauth_signature=\"...\""
+    }
+  },
+  "response": {
+    "statusCode": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": [
+      {
+        "id": 12345,
+        "name": "Lakeview Apartments",
+        "address": "100 N Lake Shore Dr",
+        "city": "Chicago",
+        "state": "IL",
+        "zip": "60611",
+        "year_built": 1975,
+        "gross_area": 42000,
+        "number_of_units": 48,
+        "building_type": "Multifamily",
+        "development_id": 789
+      },
+      {
+        "id": 12346,
+        "name": "Oak Park Senior Housing",
+        "address": "500 S Oak Park Ave",
+        "city": "Oak Park",
+        "state": "IL",
+        "zip": "60302",
+        "year_built": 1988,
+        "gross_area": 28000,
+        "number_of_units": 32,
+        "building_type": "Multifamily",
+        "development_id": 789
+      }
+    ]
+  }
+}

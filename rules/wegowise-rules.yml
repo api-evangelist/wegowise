@@ -1,0 +1,126 @@
+extends: spectral:oas
+rules:
+
+  # WegoWise uses integer IDs in paths
+  wegowise-path-id-integer:
+    description: Path parameters named 'id' should be typed as integer
+    message: Path parameter 'id' should have type integer in {{path}}
+    severity: warn
+    given: "$.paths[*][*].parameters[?(@.name == 'id')]"
+    then:
+      field: schema.type
+      function: enumeration
+      functionOptions:
+        values: [integer]
+
+  # All operations must have operationId
+  wegowise-operation-id-required:
+    description: All operations must have an operationId
+    message: Operation is missing operationId
+    severity: error
+    given: "$.paths[*][get,post,put,patch,delete]"
+    then:
+      field: operationId
+      function: truthy
+
+  # operationId must be camelCase
+  wegowise-operation-id-camel-case:
+    description: operationId must use camelCase
+    message: operationId "{{value}}" must be camelCase
+    severity: warn
+    given: "$.paths[*][*].operationId"
+    then:
+      function: pattern
+      functionOptions:
+        match: "^[a-z][a-zA-Z0-9]*$"
+
+  # Summaries must use Title Case
+  wegowise-summary-title-case:
+    description: Operation summaries must start with a capital letter (Title Case)
+    message: Summary "{{value}}" must start with a capital letter
+    severity: warn
+    given: "$.paths[*][*].summary"
+    then:
+      function: pattern
+      functionOptions:
+        match: "^[A-Z]"
+
+  # Operations must have a description
+  wegowise-description-required:
+    description: All operations must have a description
+    message: Operation is missing a description
+    severity: warn
+    given: "$.paths[*][get,post,put,patch,delete]"
+    then:
+      field: description
+      function: truthy
+
+  # All operations should have tags
+  wegowise-operation-tags:
+    description: All operations must have at least one tag
+    message: Operation is missing tags
+    severity: warn
+    given: "$.paths[*][get,post,put,patch,delete]"
+    then:
+      field: tags
+      function: truthy
+
+  # Date parameters should use ISO 8601 format
+  wegowise-date-parameter-format:
+    description: Date query parameters should specify format date
+    message: Date parameter "{{value}}" should have format 'date'
+    severity: warn
+    given: "$.paths[*][*].parameters[?(@.name == 'start_date' || @.name == 'end_date')]"
+    then:
+      field: schema.format
+      function: truthy
+
+  # Enum parameters should have enum values
+  wegowise-data-type-enum:
+    description: data_type parameters should define valid enum values
+    message: data_type parameter should define enum values
+    severity: warn
+    given: "$.paths[*][*].parameters[?(@.name == 'data_type')]"
+    then:
+      field: schema.enum
+      function: truthy
+
+  # Responses must define 401 for authenticated endpoints
+  wegowise-401-response:
+    description: Authenticated operations must define a 401 response
+    message: Operation is missing a 401 response
+    severity: warn
+    given: "$.paths[*][get,post,put,patch,delete].responses"
+    then:
+      field: "401"
+      function: truthy
+
+  # DELETE operations should return 204
+  wegowise-delete-204:
+    description: DELETE operations should return 204 No Content
+    message: DELETE operation should define a 204 response
+    severity: warn
+    given: "$.paths[*].delete.responses"
+    then:
+      field: "204"
+      function: truthy
+
+  # POST operations should return 201
+  wegowise-post-201:
+    description: POST create operations should return 201 Created
+    message: POST operation should define a 201 response
+    severity: info
+    given: "$.paths[*].post.responses"
+    then:
+      field: "201"
+      function: truthy
+
+  # Schemas must have descriptions
+  wegowise-schema-description:
+    description: Component schemas must have descriptions
+    message: Schema "{{path}}" is missing a description
+    severity: warn
+    given: "$.components.schemas[*]"
+    then:
+      field: description
+      function: truthy

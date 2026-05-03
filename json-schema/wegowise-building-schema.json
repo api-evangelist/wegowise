@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api-evangelist.github.io/wegowise/json-schema/wegowise-building-schema.json",
+  "title": "WegoWise Building",
+  "description": "JSON Schema for a building record in the WegoWise energy benchmarking platform.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer",
+      "description": "Unique WegoWise building identifier"
+    },
+    "name": {
+      "type": "string",
+      "description": "Building name"
+    },
+    "address": {
+      "type": "string",
+      "description": "Street address"
+    },
+    "city": {
+      "type": "string",
+      "description": "City"
+    },
+    "state": {
+      "type": "string",
+      "maxLength": 2,
+      "description": "US state abbreviation"
+    },
+    "zip": {
+      "type": "string",
+      "pattern": "^\\d{5}(-\\d{4})?$",
+      "description": "ZIP/postal code"
+    },
+    "year_built": {
+      "type": "integer",
+      "minimum": 1800,
+      "description": "Year the building was constructed"
+    },
+    "gross_area": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Total gross floor area in square feet"
+    },
+    "number_of_units": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of residential units"
+    },
+    "building_type": {
+      "type": "string",
+      "enum": ["Multifamily", "Commercial", "Mixed-Use"],
+      "description": "Building type classification"
+    },
+    "development_id": {
+      "type": "integer",
+      "description": "ID of the parent development grouping"
+    }
+  },
+  "required": ["id", "name", "address", "city", "state", "zip"]
+}

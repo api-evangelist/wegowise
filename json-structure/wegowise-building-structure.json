@@ -1,0 +1,18 @@
+{
+  "title": "WegoWise Building Structure",
+  "description": "Field documentation for WegoWise building records in the energy benchmarking platform.",
+  "type": "object",
+  "fields": [
+    {"name": "id", "type": "integer", "required": true, "description": "Unique WegoWise building ID"},
+    {"name": "name", "type": "string", "required": true, "description": "Building name"},
+    {"name": "address", "type": "string", "required": true, "description": "Street address"},
+    {"name": "city", "type": "string", "required": true, "description": "City"},
+    {"name": "state", "type": "string", "required": true, "description": "US state abbreviation (2 chars)"},
+    {"name": "zip", "type": "string", "required": true, "description": "ZIP code"},
+    {"name": "year_built", "type": "integer", "required": false, "description": "Construction year"},
+    {"name": "gross_area", "type": "number", "required": false, "description": "Total floor area in square feet"},
+    {"name": "number_of_units", "type": "integer", "required": false, "description": "Number of residential units"},
+    {"name": "building_type", "type": "string", "required": false, "description": "Multifamily, Commercial, or Mixed-Use"},
+    {"name": "development_id", "type": "integer", "required": false, "description": "Parent development group ID"}
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "title": "WegoWise Building Monthly Energy Data Example",
+  "description": "Example response from GET /api/v1/wego_pro/buildings/12345/data?data_type=electric&unit=kwh",
+  "request": {
+    "method": "GET",
+    "url": "https://www.wegowise.com/api/v1/wego_pro/buildings/12345/data?data_type=electric&unit=kwh&start_date=2026-01-01&end_date=2026-04-30",
+    "headers": {
+      "Accept": "application/json"
+    }
+  },
+  "response": {
+    "statusCode": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "building_id": 12345,
+      "data_type": "electric",
+      "unit": "kwh",
+      "monthly_data": [
+        {
+          "month": "2026-01-01",
+          "value": 18420,
+          "total_charge": 2140.55
+        },
+        {
+          "month": "2026-02-01",
+          "value": 16850,
+          "total_charge": 1960.22
+        },
+        {
+          "month": "2026-03-01",
+          "value": 14200,
+          "total_charge": 1650.18
+        },
+        {
+          "month": "2026-04-01",
+          "value": 12600,
+          "total_charge": 1465.30
+        }
+      ]
+    }
+  }
+}

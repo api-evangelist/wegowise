@@ -1,0 +1,162 @@
+aid: wegowise
+name: WegoWise Vocabulary
+description: >-
+  Vocabulary and terminology for WegoWise (now Comply by Measurabl), the building
+  energy and water benchmarking platform. Covers energy benchmarking concepts,
+  building types, utility data management, and performance measurement terms.
+modified: '2026-05-03'
+terms:
+
+  - term: WegoWise
+    definition: >-
+      An energy and water benchmarking software platform (now rebranded as Comply by Measurabl)
+      that helps building owners, property managers, and energy service providers track
+      utility usage across portfolios, identify savings opportunities, and demonstrate
+      conservation results. Has analyzed over 21 million utility bills across 72,000+ buildings.
+    tags:
+      - Company
+      - Platform
+
+  - term: Benchmarking
+    definition: >-
+      The process of measuring a building's energy or water performance and comparing it
+      to similar buildings, historical performance, or a reference standard (such as ENERGY STAR®).
+      WegoWise provides portfolio-level benchmarking across multifamily and commercial properties.
+    tags:
+      - Core Concept
+      - Performance
+
+  - term: Development
+    definition: >-
+      In WegoWise, a Development is a grouping of buildings — analogous to a portfolio or
+      property complex. A development can contain multiple buildings (e.g., an affordable
+      housing portfolio managed by one organization).
+    tags:
+      - Data Model
+      - Portfolio
+
+  - term: Meter
+    definition: >-
+      A WegoWise resource representing a utility meter tracking consumption for a specific
+      service (electric, gas, oil, water, steam, propane, solar). Meters are linked to
+      buildings, apartments, or commercial areas and hold the usage datapoints.
+    tags:
+      - Data Model
+      - Utility Data
+
+  - term: Raw Data
+    definition: >-
+      Actual utility bill datapoints associated with a meter. Each raw datapoint represents
+      one billing period and contains start/end dates, usage quantities (kWh, therms, gallons),
+      and cost components (total charge, delivery charge, fixed charge, fuel charge).
+    tags:
+      - Data Model
+      - Usage Data
+
+  - term: Normalized Data
+    definition: >-
+      Monthly energy usage data that has been adjusted to account for billing period
+      differences (since billing cycles don't always align perfectly with calendar months).
+      WegoWise normalizes raw data to produce consistent month-by-month comparisons.
+    tags:
+      - Data Processing
+      - Analytics
+
+  - term: EUI
+    definition: >-
+      Energy Use Intensity — a standard metric for building energy performance expressed
+      as energy used per unit area per year (kBtu/sq ft/year in the US). A lower EUI
+      indicates a more energy-efficient building. WegoWise calculates EUI as a key
+      benchmarking metric.
+    tags:
+      - Metrics
+      - Performance
+
+  - term: ENERGY STAR
+    definition: >-
+      A US EPA program rating building energy efficiency on a 1-100 scale. Buildings scoring
+      75 or higher can apply for ENERGY STAR certification. WegoWise integrates with
+      Portfolio Manager to generate ENERGY STAR scores for qualified building types.
+    tags:
+      - Certification
+      - Performance
+
+  - term: Portfolio Manager
+    definition: >-
+      The US EPA's free web tool for measuring and tracking energy and water consumption,
+      waste, and greenhouse gas emissions. WegoWise exports data to Portfolio Manager
+      for ENERGY STAR scoring and compliance reporting.
+    tags:
+      - Integration
+      - Reporting
+
+  - term: Data Type
+    definition: >-
+      The category of utility tracked by a WegoWise meter. Valid values: Electric, Gas,
+      Oil, Water, Steam, Propane, Solar, Trash. Each data type uses different units
+      (kWh for electric, therms/BTU for gas/steam/propane, gallons for oil/water).
+    tags:
+      - Data Model
+      - Utility Data
+
+  - term: Utility Login
+    definition: >-
+      Credentials stored in WegoWise for automatically importing meter data from a
+      utility company website. WegoWise uses these credentials to retrieve monthly
+      billing data on the customer's behalf.
+    tags:
+      - Automation
+      - Data Import
+
+  - term: Spike Detection
+    definition: >-
+      An automated WegoWise analysis that identifies unusual spikes or anomalies in
+      energy or water usage that may indicate equipment failures, leaks, or behavioral
+      changes. Used to identify savings opportunities.
+    tags:
+      - Analytics
+      - Anomaly Detection
+
+  - term: WegoHome
+    definition: >-
+      A WegoWise account type restricted to a single single-family home. The API provides
+      separate endpoints (/api/v1/wego_home/) for creating and managing WegoHome accounts.
+    tags:
+      - Account Types
+      - Data Model
+
+  - term: WegoPro
+    definition: >-
+      The WegoWise account type for multifamily and commercial property portfolios.
+      Supports multiple buildings, apartments, commercial areas, and meters. The most
+      commonly used account type for property managers and energy service providers.
+    tags:
+      - Account Types
+      - Data Model
+
+  - term: WegoData
+    definition: >-
+      A WegoWise account type for data-only access — meters without building structure
+      associations. Used when the goal is meter data collection and analysis without
+      the full building/apartment hierarchy.
+    tags:
+      - Account Types
+      - Data Model
+
+  - term: Comply
+    definition: >-
+      The rebranded name for WegoWise after its acquisition by Measurabl. Comply focuses
+      on building energy disclosure law compliance (such as NYC Local Law 84/97, Chicago
+      Energy Benchmarking Ordinance, BERDO in Boston) in addition to benchmarking.
+    tags:
+      - Compliance
+      - Platform
+
+  - term: EUI Intensity
+    definition: >-
+      A normalized energy performance metric calculated by WegoWise as kBtu per square foot
+      per year, allowing comparison across buildings of different sizes. Enables portfolio
+      managers to rank buildings by efficiency.
+    tags:
+      - Metrics
+      - Performance

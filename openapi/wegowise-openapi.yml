@@ -1,0 +1,1177 @@
+openapi: 3.1.0
+info:
+  title: WegoWise API
+  description: >-
+    The WegoWise API (now Comply by Measurabl) is built on REST. It enables building
+    owners, property managers, and energy service providers to programmatically manage
+    their building portfolio, track utility meter data, and benchmark energy and water
+    performance across multifamily and commercial properties. All responses are delivered
+    as JSON. Authentication uses OAuth 1.0 for private endpoints.
+  version: 1.0.0
+  contact:
+    name: WegoWise Support
+    url: https://www.wegowise.com/
+  license:
+    name: Proprietary
+    url: https://www.wegowise.com/terms
+
+externalDocs:
+  description: WegoWise API Documentation
+  url: https://www.wegowise.com/api
+
+servers:
+  - url: https://www.wegowise.com
+    description: WegoWise Production API
+
+security:
+  - oauth1: []
+
+tags:
+  - name: Buildings
+    description: Manage building records in a portfolio
+  - name: Apartments
+    description: Manage apartment and unit records within buildings
+  - name: Areas
+    description: Manage commercial building area records
+  - name: Developments
+    description: Manage development (property portfolio group) records
+  - name: Meters
+    description: Track utility meters for buildings, apartments, and areas
+  - name: Usage Data
+    description: Retrieve and submit raw and aggregated utility usage datapoints
+  - name: Utility Companies
+    description: Public list of supported utility companies
+  - name: Utility Logins
+    description: Manage automated utility data import credentials
+  - name: Authentication
+    description: OAuth 1.0 authentication flow
+
+paths:
+  /api/v1/utility_companies:
+    get:
+      operationId: listUtilityCompanies
+      summary: List Supported Utility Companies
+      description: >-
+        Returns a list of utility companies that WegoWise can currently import
+        data from automatically. Useful for looking up utility_company_id values
+        when creating meters. No authentication required.
+      tags:
+        - Utility Companies
+      security: []
+      parameters:
+        - name: state
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter by US state code (e.g., WI, IL, CA)
+        - name: data_type
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [Electric, Gas, Oil, Water, Steam, Propane]
+          description: Filter by utility data type
+      responses:
+        '200':
+          description: List of supported utility companies
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UtilityCompany'
+
+  /api/v1/wego_pro/buildings:
+    get:
+      operationId: listBuildings
+      summary: List Buildings
+      description: Returns a list of buildings that the authorized user has access to.
+      tags:
+        - Buildings
+      responses:
+        '200':
+          description: List of buildings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Building'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /api/v1/wego_pro/buildings/{id}:
+    get:
+      operationId: getBuilding
+      summary: Get Building
+      description: Returns details for a specific building by ID.
+      tags:
+        - Buildings
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: Building details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Building'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      operationId: updateBuilding
+      summary: Update Building
+      description: Updates an existing building record.
+      tags:
+        - Buildings
+      parameters:
+        - $ref: '#/components/parameters/id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BuildingInput'
+      responses:
+        '200':
+          description: Updated building
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Building'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteBuilding
+      summary: Delete Building
+      description: Deletes a building and all associated data (cascades to apartments, meters, and data).
+      tags:
+        - Buildings
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '204':
+          description: Building deleted successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /api/v1/wego_pro/developments/{id}/buildings:
+    get:
+      operationId: listDevelopmentBuildings
+      summary: List Development Buildings
+      description: Returns all buildings belonging to a specific development.
+      tags:
+        - Buildings
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: List of buildings in the development
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Building'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createBuilding
+      summary: Create Building
+      description: Creates a new building within a development.
+      tags:
+        - Buildings
+      parameters:
+        - $ref: '#/components/parameters/id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BuildingInput'
+      responses:
+        '201':
+          description: Building created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Building'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /api/v1/wego_pro/buildings/{id}/apartments:
+    get:
+      operationId: listApartments
+      summary: List Apartments
+      description: Returns all apartments within a specific building.
+      tags:
+        - Apartments
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: List of apartments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Apartment'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createApartment
+      summary: Create Apartment
+      description: Creates a new apartment within a building.
+      tags:
+        - Apartments
+      parameters:
+        - $ref: '#/components/parameters/id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApartmentInput'
+      responses:
+        '201':
+          description: Apartment created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Apartment'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /api/v1/wego_pro/apartments/{id}:
+    get:
+      operationId: getApartment
+      summary: Get Apartment
+      description: Returns details for a specific apartment.
+      tags:
+        - Apartments
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: Apartment details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Apartment'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      operationId: updateApartment
+      summary: Update Apartment
+      description: Updates an existing apartment record.
+      tags:
+        - Apartments
+      parameters:
+        - $ref: '#/components/parameters/id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApartmentInput'
+      responses:
+        '200':
+          description: Updated apartment
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Apartment'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    delete:
+      operationId: deleteApartment
+      summary: Delete Apartment
+      description: Deletes an apartment and all associated meters and data.
+      tags:
+        - Apartments
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '204':
+          description: Apartment deleted successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /api/v1/wego_pro/buildings/{id}/areas:
+    get:
+      operationId: listAreas
+      summary: List Commercial Areas
+      description: Returns all commercial areas within a building.
+      tags:
+        - Areas
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: List of commercial areas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Area'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createArea
+      summary: Create Commercial Area
+      description: Creates a new commercial area within a building.
+      tags:
+        - Areas
+      parameters:
+        - $ref: '#/components/parameters/id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AreaInput'
+      responses:
+        '201':
+          description: Area created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Area'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /api/v1/wego_pro/areas/{id}:
+    get:
+      operationId: getArea
+      summary: Get Commercial Area
+      description: Returns details for a specific commercial area.
+      tags:
+        - Areas
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: Area details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Area'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    put:
+      operationId: updateArea
+      summary: Update Commercial Area
+      description: Updates a commercial area record.
+      tags:
+        - Areas
+      parameters:
+        - $ref: '#/components/parameters/id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AreaInput'
+      responses:
+        '200':
+          description: Updated area
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Area'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    delete:
+      operationId: deleteArea
+      summary: Delete Commercial Area
+      description: Deletes a commercial area and all associated data.
+      tags:
+        - Areas
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '204':
+          description: Area deleted successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /api/v1/wego_pro/buildings/{id}/meters:
+    get:
+      operationId: listBuildingMeters
+      summary: List Building Meters
+      description: Returns all utility meters associated with a building.
+      tags:
+        - Meters
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: List of meters
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Meter'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /api/v1/wego_pro/buildings/{id}/data:
+    get:
+      operationId: getBuildingData
+      summary: Get Building Usage Data
+      description: >-
+        Returns normalized monthly energy and water usage data for a building.
+        Data is normalized to account for billing period differences.
+      tags:
+        - Usage Data
+      parameters:
+        - $ref: '#/components/parameters/id'
+        - name: data_type
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [electric, gas, oil, water, steam, propane]
+          description: Filter by utility data type
+        - name: unit
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [kwh, therms, gallons, btu, total_charge]
+          description: Unit for returned values
+        - name: start_date
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+          description: Start date for data range (YYYY-MM-DD)
+        - name: end_date
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+          description: End date for data range (YYYY-MM-DD)
+      responses:
+        '200':
+          description: Monthly usage data for the building
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageDataResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /api/v1/wego_pro/meters/{id}/raw_data:
+    get:
+      operationId: getMeterRawData
+      summary: Get Meter Raw Data
+      description: >-
+        Retrieves a collection of datapoints for a given meter. Returns all raw data
+        including manually added datapoints and those imported from utility websites.
+      tags:
+        - Usage Data
+      parameters:
+        - $ref: '#/components/parameters/id'
+        - name: start_date
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: end_date
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Raw meter datapoints
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RawDatapoint'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createMeterRawData
+      summary: Create Meter Datapoint
+      description: Manually creates a new utility usage datapoint for a meter.
+      tags:
+        - Usage Data
+      parameters:
+        - $ref: '#/components/parameters/id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RawDatapointInput'
+      responses:
+        '201':
+          description: Datapoint created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RawDatapoint'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /api/v1/wego_pro/meters/{id}/data:
+    get:
+      operationId: getMeterData
+      summary: Get Meter Monthly Data
+      description: Returns normalized monthly data for a specific meter.
+      tags:
+        - Usage Data
+      parameters:
+        - $ref: '#/components/parameters/id'
+        - name: unit
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [kwh, therms, gallons, btu, total_charge]
+      responses:
+        '200':
+          description: Monthly meter data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageDataResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /api/v1/wego_pro/developments:
+    post:
+      operationId: createDevelopment
+      summary: Create Development
+      description: Creates a new development (portfolio group) for organizing buildings.
+      tags:
+        - Developments
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DevelopmentInput'
+      responses:
+        '201':
+          description: Development created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Development'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /api/v1/wego_data/meters:
+    get:
+      operationId: listDataMeters
+      summary: List Data Meters
+      description: Returns a list of meters that the authorized data-only user has access to.
+      tags:
+        - Meters
+      responses:
+        '200':
+          description: List of meters
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Meter'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createDataMeter
+      summary: Create Data Meter
+      description: Creates a new meter with utility company credentials for automated data import.
+      tags:
+        - Meters
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeterInput'
+      responses:
+        '201':
+          description: Meter created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Meter'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /api/v1/wego_data/meters/{id}:
+    get:
+      operationId: getDataMeter
+      summary: Get Data Meter
+      description: Returns details for a specific data meter.
+      tags:
+        - Meters
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: Meter details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Meter'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    put:
+      operationId: updateDataMeter
+      summary: Update Data Meter
+      description: Updates meter notes or nickname.
+      tags:
+        - Meters
+      parameters:
+        - $ref: '#/components/parameters/id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                notes:
+                  type: string
+                nickname:
+                  type: string
+      responses:
+        '200':
+          description: Updated meter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Meter'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    delete:
+      operationId: deleteDataMeter
+      summary: Delete Data Meter
+      description: Deletes a meter and all associated data.
+      tags:
+        - Meters
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '204':
+          description: Meter deleted
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /api/v1/wego_data/utility_logins/{id}:
+    get:
+      operationId: getUtilityLogin
+      summary: Get Utility Login Status
+      description: Returns login status and account information for automated data imports.
+      tags:
+        - Utility Logins
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: Utility login status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UtilityLogin'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    patch:
+      operationId: updateUtilityLogin
+      summary: Update Utility Login Credentials
+      description: Updates the username and password for automated utility data import.
+      tags:
+        - Utility Logins
+      parameters:
+        - $ref: '#/components/parameters/id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Updated utility login
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UtilityLogin'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /api/v1/wego_data/meters/{id}/raw_data:
+    get:
+      operationId: getDataMeterRawData
+      summary: Get Data Meter Raw Data
+      description: >-
+        Retrieves all raw datapoints for a meter including manually added data
+        and automatically imported utility data.
+      tags:
+        - Usage Data
+      parameters:
+        - $ref: '#/components/parameters/id'
+        - name: start_date
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: end_date
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Raw meter datapoints
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RawDatapoint'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createDataMeterRawData
+      summary: Create Data Meter Datapoint
+      description: Manually creates a utility usage datapoint for a data meter.
+      tags:
+        - Usage Data
+      parameters:
+        - $ref: '#/components/parameters/id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RawDatapointInput'
+      responses:
+        '201':
+          description: Datapoint created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RawDatapoint'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /api/v1/wego_data/meters/{id}/latest_datum:
+    get:
+      operationId: getLatestDatum
+      summary: Get Latest Meter Datapoint
+      description: Returns the most recent usage datapoint for a meter.
+      tags:
+        - Usage Data
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: Latest datapoint
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RawDatapoint'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+components:
+  securitySchemes:
+    oauth1:
+      type: http
+      scheme: oauth
+      description: OAuth 1.0 authentication required for private endpoints
+
+  parameters:
+    id:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: Resource identifier
+
+  responses:
+    Unauthorized:
+      description: Authentication credentials missing or invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Requested resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Invalid request parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+  schemas:
+    Building:
+      type: object
+      description: A building in a WegoWise portfolio
+      properties:
+        id:
+          type: integer
+          description: Unique building identifier
+        name:
+          type: string
+          description: Building name
+        address:
+          type: string
+          description: Street address
+        city:
+          type: string
+        state:
+          type: string
+          description: US state abbreviation
+        zip:
+          type: string
+        year_built:
+          type: integer
+          description: Year the building was constructed
+        gross_area:
+          type: number
+          description: Total gross floor area in square feet
+        number_of_units:
+          type: integer
+          description: Number of residential units (apartments)
+        building_type:
+          type: string
+          enum: [Multifamily, Commercial, Mixed-Use]
+        development_id:
+          type: integer
+          description: ID of the parent development
+
+    BuildingInput:
+      type: object
+      description: Input schema for creating or updating a building
+      properties:
+        name:
+          type: string
+        address:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        zip:
+          type: string
+        year_built:
+          type: integer
+        gross_area:
+          type: number
+        number_of_units:
+          type: integer
+      required: [name, address, city, state, zip]
+
+    Apartment:
+      type: object
+      description: An apartment or residential unit within a building
+      properties:
+        id:
+          type: integer
+        unit_number:
+          type: string
+          description: Unit designation (e.g., "1A", "203")
+        building_id:
+          type: integer
+        area:
+          type: number
+          description: Unit area in square feet
+        bedrooms:
+          type: integer
+        occupants:
+          type: integer
+
+    ApartmentInput:
+      type: object
+      properties:
+        unit_number:
+          type: string
+        area:
+          type: number
+        bedrooms:
+          type: integer
+      required: [unit_number]
+
+    Area:
+      type: object
+      description: A commercial area or space within a building
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          description: Area name or tenant name
+        building_id:
+          type: integer
+        area_type:
+          type: string
+          description: Type of commercial space
+        square_footage:
+          type: number
+
+    AreaInput:
+      type: object
+      properties:
+        name:
+          type: string
+        area_type:
+          type: string
+        square_footage:
+          type: number
+      required: [name]
+
+    Development:
+      type: object
+      description: A development groups multiple buildings in a portfolio
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        owner_username:
+          type: string
+        building_count:
+          type: integer
+
+    DevelopmentInput:
+      type: object
+      properties:
+        name:
+          type: string
+      required: [name]
+
+    Meter:
+      type: object
+      description: A utility meter tracking energy or water consumption
+      properties:
+        id:
+          type: integer
+        account_number:
+          type: string
+          description: Utility account number for this meter
+        data_type:
+          type: string
+          enum: [Electric, Gas, Oil, Water, Steam, Propane, Solar, Trash]
+          description: Type of utility being measured
+        nickname:
+          type: string
+          description: Optional nickname for this meter
+        notes:
+          type: string
+        utility_company_id:
+          type: integer
+          description: ID of the utility company providing this service
+        building_id:
+          type: integer
+        apartment_id:
+          type: integer
+        area_id:
+          type: integer
+        last_import_date:
+          type: string
+          format: date
+
+    MeterInput:
+      type: object
+      properties:
+        account_number:
+          type: string
+        utility_company_id:
+          type: integer
+        data_type:
+          type: string
+          enum: [Electric, Gas, Oil, Water, Steam, Propane, Solar, Trash]
+        username:
+          type: string
+          description: Utility website login username for automated imports
+        password:
+          type: string
+          description: Utility website login password for automated imports
+      required: [account_number, utility_company_id, data_type]
+
+    RawDatapoint:
+      type: object
+      description: A raw utility usage datapoint for a billing period
+      properties:
+        id:
+          type: integer
+        meter_id:
+          type: integer
+        start_date:
+          type: string
+          format: date
+          description: Start of the billing period
+        end_date:
+          type: string
+          format: date
+          description: End of the billing period
+        total_charge:
+          type: number
+          description: Total utility bill amount in USD
+        delivery_charge:
+          type: number
+          description: Delivery/distribution charge component
+        fixed_charge:
+          type: number
+          description: Fixed monthly charge component
+        fuel_charge:
+          type: number
+          description: Fuel cost component
+        kwh:
+          type: number
+          description: Electricity consumption in kWh (for electric meters)
+        btu:
+          type: number
+          description: Energy content in BTU (for gas/oil/steam/propane meters)
+        gallons:
+          type: number
+          description: Volume in gallons (for oil/water/propane/steam meters)
+        imported:
+          type: boolean
+          description: Whether this datapoint was imported automatically from the utility
+
+    RawDatapointInput:
+      type: object
+      properties:
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        total_charge:
+          type: number
+        kwh:
+          type: number
+        btu:
+          type: number
+        gallons:
+          type: number
+      required: [start_date, end_date]
+
+    UsageDataResponse:
+      type: object
+      description: Monthly normalized usage data response
+      properties:
+        building_id:
+          type: integer
+        meter_id:
+          type: integer
+        data_type:
+          type: string
+        unit:
+          type: string
+        monthly_data:
+          type: array
+          items:
+            type: object
+            properties:
+              month:
+                type: string
+                format: date
+                description: First day of the month (YYYY-MM-01)
+              value:
+                type: number
+                description: Usage value in requested units
+              total_charge:
+                type: number
+
+    UtilityCompany:
+      type: object
+      description: A utility company supported for automated data import
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          description: Utility company name
+        data_type:
+          type: string
+          enum: [Electric, Gas, Oil, Water, Steam]
+        state:
+          type: string
+          description: US state code
+        country:
+          type: string
+          default: US
+        currency:
+          type: string
+          default: USD
+
+    UtilityLogin:
+      type: object
+      description: Utility website credentials for automated data import
+      properties:
+        id:
+          type: integer
+        utility_company_id:
+          type: integer
+        status:
+          type: string
+          enum: [awaiting_import, bad_login, deferred, in_progress, inactive, no_accounts, site_error, success]
+          description: Current import status
+        username:
+          type: string
+        last_import_at:
+          type: string
+          format: date-time
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message
+        code:
+          type: integer

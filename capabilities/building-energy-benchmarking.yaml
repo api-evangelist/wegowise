@@ -1,0 +1,304 @@
+naftiko: "1.0.0-alpha1"
+
+info:
+  label: "WegoWise Building Energy Benchmarking"
+  description: >-
+    Capability for building energy and water benchmarking using the WegoWise API.
+    Enables property managers and energy service providers to assess portfolio
+    performance, identify underperforming buildings, track conservation progress,
+    and benchmark against peers. Combines building management with meter data
+    retrieval for comprehensive energy analysis.
+  tags:
+    - WegoWise
+    - Building Energy
+    - Benchmarking
+    - Energy Efficiency
+    - Property Management
+    - Sustainability
+  created: "2026-05-03"
+  modified: "2026-05-03"
+
+binds:
+  - namespace: env
+    keys:
+      WEGOWISE_OAUTH_KEY: WEGOWISE_OAUTH_KEY
+      WEGOWISE_OAUTH_SECRET: WEGOWISE_OAUTH_SECRET
+      WEGOWISE_TOKEN: WEGOWISE_TOKEN
+      WEGOWISE_TOKEN_SECRET: WEGOWISE_TOKEN_SECRET
+
+capability:
+  consumes:
+    - import: wegowise
+      location: ./shared/wegowise.yaml
+
+  exposes:
+    - type: rest
+      port: 8080
+      namespace: wegowise-benchmarking-api
+      description: "Unified REST API for WegoWise building energy benchmarking."
+      resources:
+        - path: /v1/utility-companies
+          name: utility-companies
+          description: "Supported utility companies for automated data import"
+          operations:
+            - method: GET
+              name: list-utility-companies
+              description: "List all utility companies supported for data import"
+              call: "wegowise.list-utility-companies"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+        - path: /v1/buildings
+          name: buildings
+          description: "Building portfolio management"
+          operations:
+            - method: GET
+              name: list-buildings
+              description: "List all buildings in the portfolio"
+              call: "wegowise.list-buildings"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+        - path: /v1/buildings/{id}
+          name: building
+          operations:
+            - method: GET
+              name: get-building
+              description: "Get building details and metadata"
+              call: "wegowise.get-building"
+              with:
+                id: "rest.id"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+        - path: /v1/buildings/{id}/energy-data
+          name: building-energy-data
+          description: "Monthly energy and water usage data"
+          operations:
+            - method: GET
+              name: get-building-energy-data
+              description: "Get normalized monthly energy usage data for benchmarking"
+              call: "wegowise.get-building-data"
+              with:
+                id: "rest.id"
+                data_type: "rest.data_type"
+                unit: "rest.unit"
+                start_date: "rest.start_date"
+                end_date: "rest.end_date"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+        - path: /v1/buildings/{id}/meters
+          name: building-meters
+          operations:
+            - method: GET
+              name: list-building-meters
+              description: "List utility meters for a building"
+              call: "wegowise.list-building-meters"
+              with:
+                id: "rest.id"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+        - path: /v1/buildings/{id}/apartments
+          name: building-apartments
+          operations:
+            - method: GET
+              name: list-apartments
+              description: "List apartment units in a building"
+              call: "wegowise.list-apartments"
+              with:
+                id: "rest.id"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+        - path: /v1/meters/{id}/data
+          name: meter-data
+          operations:
+            - method: GET
+              name: get-meter-raw-data
+              description: "Get raw utility datapoints for a meter"
+              call: "wegowise.get-meter-raw-data"
+              with:
+                id: "rest.id"
+                start_date: "rest.start_date"
+                end_date: "rest.end_date"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+        - path: /v1/meters/{id}/latest
+          name: meter-latest
+          operations:
+            - method: GET
+              name: get-latest-datum
+              description: "Get most recent meter reading"
+              call: "wegowise.get-latest-datum"
+              with:
+                id: "rest.id"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+        - path: /v1/data-meters
+          name: data-meters
+          operations:
+            - method: GET
+              name: list-data-meters
+              description: "List data-only meters"
+              call: "wegowise.list-data-meters"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+            - method: POST
+              name: create-data-meter
+              description: "Create a meter with utility credentials for automated import"
+              call: "wegowise.create-data-meter"
+              with:
+                account_number: "rest.account_number"
+                utility_company_id: "rest.utility_company_id"
+                data_type: "rest.data_type"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+    - type: mcp
+      port: 9090
+      namespace: wegowise-benchmarking-mcp
+      transport: http
+      description: "MCP server for AI-assisted building energy benchmarking and analysis."
+      tools:
+        - name: list-utility-companies
+          description: "List utility companies available for automated meter data import"
+          hints:
+            readOnly: true
+            openWorld: true
+          call: "wegowise.list-utility-companies"
+          outputParameters:
+            - type: object
+              mapping: "$."
+
+        - name: list-buildings
+          description: "List all buildings in the WegoWise portfolio with metadata"
+          hints:
+            readOnly: true
+            openWorld: true
+          call: "wegowise.list-buildings"
+          outputParameters:
+            - type: object
+              mapping: "$."
+
+        - name: get-building
+          description: "Get detailed information about a specific building including size and type"
+          hints:
+            readOnly: true
+          call: "wegowise.get-building"
+          with:
+            id: "tools.id"
+          outputParameters:
+            - type: object
+              mapping: "$."
+
+        - name: get-building-energy-data
+          description: "Get normalized monthly energy usage data for a building - use for benchmarking and trend analysis"
+          hints:
+            readOnly: true
+          call: "wegowise.get-building-data"
+          with:
+            id: "tools.id"
+            data_type: "tools.data_type"
+            unit: "tools.unit"
+            start_date: "tools.start_date"
+            end_date: "tools.end_date"
+          outputParameters:
+            - type: object
+              mapping: "$."
+
+        - name: list-building-meters
+          description: "List all utility meters associated with a building"
+          hints:
+            readOnly: true
+          call: "wegowise.list-building-meters"
+          with:
+            id: "tools.id"
+          outputParameters:
+            - type: object
+              mapping: "$."
+
+        - name: list-apartments
+          description: "List all apartment units within a building"
+          hints:
+            readOnly: true
+          call: "wegowise.list-apartments"
+          with:
+            id: "tools.id"
+          outputParameters:
+            - type: object
+              mapping: "$."
+
+        - name: get-meter-raw-data
+          description: "Get raw utility usage datapoints for a meter including billing period data"
+          hints:
+            readOnly: true
+          call: "wegowise.get-meter-raw-data"
+          with:
+            id: "tools.id"
+            start_date: "tools.start_date"
+            end_date: "tools.end_date"
+          outputParameters:
+            - type: object
+              mapping: "$."
+
+        - name: get-latest-meter-reading
+          description: "Get the most recent utility reading for a meter"
+          hints:
+            readOnly: true
+          call: "wegowise.get-latest-datum"
+          with:
+            id: "tools.id"
+          outputParameters:
+            - type: object
+              mapping: "$."
+
+        - name: create-meter-datapoint
+          description: "Manually add a utility usage datapoint to a meter"
+          hints:
+            readOnly: false
+          call: "wegowise.create-meter-datapoint"
+          with:
+            id: "tools.id"
+            start_date: "tools.start_date"
+            end_date: "tools.end_date"
+            total_charge: "tools.total_charge"
+            kwh: "tools.kwh"
+          outputParameters:
+            - type: object
+              mapping: "$."
+
+        - name: list-data-meters
+          description: "List data-only meters for automated utility data import"
+          hints:
+            readOnly: true
+          call: "wegowise.list-data-meters"
+          outputParameters:
+            - type: object
+              mapping: "$."
+
+        - name: create-data-meter
+          description: "Create a meter connected to a utility company for automated data import"
+          hints:
+            readOnly: false
+          call: "wegowise.create-data-meter"
+          with:
+            account_number: "tools.account_number"
+            utility_company_id: "tools.utility_company_id"
+            data_type: "tools.data_type"
+          outputParameters:
+            - type: object
+              mapping: "$."
