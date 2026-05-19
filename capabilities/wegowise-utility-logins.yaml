@@ -1,0 +1,102 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: WegoWise API — Utility Logins
+  description: 'WegoWise API — Utility Logins. 2 operations. Lead operation: Get Utility Login Status. Self-contained Naftiko
+    capability covering one Wegowise business surface.'
+  tags:
+  - Wegowise
+  - Utility Logins
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    WEGOWISE_API_KEY: WEGOWISE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: wegowise-utility-logins
+    baseUri: https://www.wegowise.com
+    description: WegoWise API — Utility Logins business capability. Self-contained, no shared references.
+    resources:
+    - name: api-v1-wego_data-utility_logins-id
+      path: /api/v1/wego_data/utility_logins/{id}
+      operations:
+      - name: getutilitylogin
+        method: GET
+        description: Get Utility Login Status
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updateutilitylogin
+        method: PATCH
+        description: Update Utility Login Credentials
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  exposes:
+  - type: rest
+    namespace: wegowise-utility-logins-rest
+    port: 8080
+    description: REST adapter for WegoWise API — Utility Logins. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/api/v1/wego-data/utility-logins/{id}
+      name: api-v1-wego-data-utility-logins-id
+      description: REST surface for api-v1-wego_data-utility_logins-id.
+      operations:
+      - method: GET
+        name: getutilitylogin
+        description: Get Utility Login Status
+        call: wegowise-utility-logins.getutilitylogin
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: updateutilitylogin
+        description: Update Utility Login Credentials
+        call: wegowise-utility-logins.updateutilitylogin
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: wegowise-utility-logins-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for WegoWise API — Utility Logins. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: get-utility-login-status
+      description: Get Utility Login Status
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: wegowise-utility-logins.getutilitylogin
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: update-utility-login-credentials
+      description: Update Utility Login Credentials
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: wegowise-utility-logins.updateutilitylogin
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

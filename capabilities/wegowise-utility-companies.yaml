@@ -1,0 +1,82 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: WegoWise API — Utility Companies
+  description: 'WegoWise API — Utility Companies. 1 operations. Lead operation: List Supported Utility Companies. Self-contained
+    Naftiko capability covering one Wegowise business surface.'
+  tags:
+  - Wegowise
+  - Utility Companies
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    WEGOWISE_API_KEY: WEGOWISE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: wegowise-utility-companies
+    baseUri: https://www.wegowise.com
+    description: WegoWise API — Utility Companies business capability. Self-contained, no shared references.
+    resources:
+    - name: api-v1-utility_companies
+      path: /api/v1/utility_companies
+      operations:
+      - name: listutilitycompanies
+        method: GET
+        description: List Supported Utility Companies
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: state
+          in: query
+          type: string
+          description: Filter by US state code (e.g., WI, IL, CA)
+        - name: data_type
+          in: query
+          type: string
+          description: Filter by utility data type
+  exposes:
+  - type: rest
+    namespace: wegowise-utility-companies-rest
+    port: 8080
+    description: REST adapter for WegoWise API — Utility Companies. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/api/v1/utility-companies
+      name: api-v1-utility-companies
+      description: REST surface for api-v1-utility_companies.
+      operations:
+      - method: GET
+        name: listutilitycompanies
+        description: List Supported Utility Companies
+        call: wegowise-utility-companies.listutilitycompanies
+        with:
+          state: rest.state
+          data_type: rest.data_type
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: wegowise-utility-companies-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for WegoWise API — Utility Companies. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: list-supported-utility-companies
+      description: List Supported Utility Companies
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: wegowise-utility-companies.listutilitycompanies
+      with:
+        state: tools.state
+        data_type: tools.data_type
+      outputParameters:
+      - type: object
+        mapping: $.

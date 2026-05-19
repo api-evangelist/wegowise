@@ -1,0 +1,194 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: WegoWise API — Areas
+  description: 'WegoWise API — Areas. 5 operations. Lead operation: Get Commercial Area. Self-contained Naftiko capability
+    covering one Wegowise business surface.'
+  tags:
+  - Wegowise
+  - Areas
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    WEGOWISE_API_KEY: WEGOWISE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: wegowise-areas
+    baseUri: https://www.wegowise.com
+    description: WegoWise API — Areas business capability. Self-contained, no shared references.
+    resources:
+    - name: api-v1-wego_pro-areas-id
+      path: /api/v1/wego_pro/areas/{id}
+      operations:
+      - name: getarea
+        method: GET
+        description: Get Commercial Area
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updatearea
+        method: PUT
+        description: Update Commercial Area
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deletearea
+        method: DELETE
+        description: Delete Commercial Area
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: api-v1-wego_pro-buildings-id-areas
+      path: /api/v1/wego_pro/buildings/{id}/areas
+      operations:
+      - name: listareas
+        method: GET
+        description: List Commercial Areas
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createarea
+        method: POST
+        description: Create Commercial Area
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  exposes:
+  - type: rest
+    namespace: wegowise-areas-rest
+    port: 8080
+    description: REST adapter for WegoWise API — Areas. One Spectral-compliant resource per consumed operation, prefixed with
+      /v1.
+    resources:
+    - path: /v1/api/v1/wego-pro/areas/{id}
+      name: api-v1-wego-pro-areas-id
+      description: REST surface for api-v1-wego_pro-areas-id.
+      operations:
+      - method: GET
+        name: getarea
+        description: Get Commercial Area
+        call: wegowise-areas.getarea
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: updatearea
+        description: Update Commercial Area
+        call: wegowise-areas.updatearea
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletearea
+        description: Delete Commercial Area
+        call: wegowise-areas.deletearea
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/v1/wego-pro/buildings/{id}/areas
+      name: api-v1-wego-pro-buildings-id-areas
+      description: REST surface for api-v1-wego_pro-buildings-id-areas.
+      operations:
+      - method: GET
+        name: listareas
+        description: List Commercial Areas
+        call: wegowise-areas.listareas
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createarea
+        description: Create Commercial Area
+        call: wegowise-areas.createarea
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: wegowise-areas-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for WegoWise API — Areas. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: get-commercial-area
+      description: Get Commercial Area
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: wegowise-areas.getarea
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: update-commercial-area
+      description: Update Commercial Area
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: wegowise-areas.updatearea
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: delete-commercial-area
+      description: Delete Commercial Area
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: wegowise-areas.deletearea
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: list-commercial-areas
+      description: List Commercial Areas
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: wegowise-areas.listareas
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-commercial-area
+      description: Create Commercial Area
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: wegowise-areas.createarea
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

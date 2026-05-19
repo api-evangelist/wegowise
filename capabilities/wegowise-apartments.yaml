@@ -1,0 +1,194 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: WegoWise API — Apartments
+  description: 'WegoWise API — Apartments. 5 operations. Lead operation: Get Apartment. Self-contained Naftiko capability
+    covering one Wegowise business surface.'
+  tags:
+  - Wegowise
+  - Apartments
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    WEGOWISE_API_KEY: WEGOWISE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: wegowise-apartments
+    baseUri: https://www.wegowise.com
+    description: WegoWise API — Apartments business capability. Self-contained, no shared references.
+    resources:
+    - name: api-v1-wego_pro-apartments-id
+      path: /api/v1/wego_pro/apartments/{id}
+      operations:
+      - name: getapartment
+        method: GET
+        description: Get Apartment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updateapartment
+        method: PUT
+        description: Update Apartment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deleteapartment
+        method: DELETE
+        description: Delete Apartment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: api-v1-wego_pro-buildings-id-apartments
+      path: /api/v1/wego_pro/buildings/{id}/apartments
+      operations:
+      - name: listapartments
+        method: GET
+        description: List Apartments
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createapartment
+        method: POST
+        description: Create Apartment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  exposes:
+  - type: rest
+    namespace: wegowise-apartments-rest
+    port: 8080
+    description: REST adapter for WegoWise API — Apartments. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/api/v1/wego-pro/apartments/{id}
+      name: api-v1-wego-pro-apartments-id
+      description: REST surface for api-v1-wego_pro-apartments-id.
+      operations:
+      - method: GET
+        name: getapartment
+        description: Get Apartment
+        call: wegowise-apartments.getapartment
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: updateapartment
+        description: Update Apartment
+        call: wegowise-apartments.updateapartment
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteapartment
+        description: Delete Apartment
+        call: wegowise-apartments.deleteapartment
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/v1/wego-pro/buildings/{id}/apartments
+      name: api-v1-wego-pro-buildings-id-apartments
+      description: REST surface for api-v1-wego_pro-buildings-id-apartments.
+      operations:
+      - method: GET
+        name: listapartments
+        description: List Apartments
+        call: wegowise-apartments.listapartments
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createapartment
+        description: Create Apartment
+        call: wegowise-apartments.createapartment
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: wegowise-apartments-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for WegoWise API — Apartments. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: get-apartment
+      description: Get Apartment
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: wegowise-apartments.getapartment
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: update-apartment
+      description: Update Apartment
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: wegowise-apartments.updateapartment
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: delete-apartment
+      description: Delete Apartment
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: wegowise-apartments.deleteapartment
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: list-apartments
+      description: List Apartments
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: wegowise-apartments.listapartments
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-apartment
+      description: Create Apartment
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: wegowise-apartments.createapartment
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

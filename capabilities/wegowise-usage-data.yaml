@@ -1,0 +1,326 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: WegoWise API — Usage Data
+  description: 'WegoWise API — Usage Data. 7 operations. Lead operation: Get Latest Meter Datapoint. Self-contained Naftiko
+    capability covering one Wegowise business surface.'
+  tags:
+  - Wegowise
+  - Usage Data
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    WEGOWISE_API_KEY: WEGOWISE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: wegowise-usage-data
+    baseUri: https://www.wegowise.com
+    description: WegoWise API — Usage Data business capability. Self-contained, no shared references.
+    resources:
+    - name: api-v1-wego_data-meters-id-latest_datum
+      path: /api/v1/wego_data/meters/{id}/latest_datum
+      operations:
+      - name: getlatestdatum
+        method: GET
+        description: Get Latest Meter Datapoint
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: api-v1-wego_data-meters-id-raw_data
+      path: /api/v1/wego_data/meters/{id}/raw_data
+      operations:
+      - name: getdatameterrawdata
+        method: GET
+        description: Get Data Meter Raw Data
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: start_date
+          in: query
+          type: string
+        - name: end_date
+          in: query
+          type: string
+      - name: createdatameterrawdata
+        method: POST
+        description: Create Data Meter Datapoint
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: api-v1-wego_pro-buildings-id-data
+      path: /api/v1/wego_pro/buildings/{id}/data
+      operations:
+      - name: getbuildingdata
+        method: GET
+        description: Get Building Usage Data
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: data_type
+          in: query
+          type: string
+          description: Filter by utility data type
+        - name: unit
+          in: query
+          type: string
+          description: Unit for returned values
+        - name: start_date
+          in: query
+          type: string
+          description: Start date for data range (YYYY-MM-DD)
+        - name: end_date
+          in: query
+          type: string
+          description: End date for data range (YYYY-MM-DD)
+    - name: api-v1-wego_pro-meters-id-data
+      path: /api/v1/wego_pro/meters/{id}/data
+      operations:
+      - name: getmeterdata
+        method: GET
+        description: Get Meter Monthly Data
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: unit
+          in: query
+          type: string
+    - name: api-v1-wego_pro-meters-id-raw_data
+      path: /api/v1/wego_pro/meters/{id}/raw_data
+      operations:
+      - name: getmeterrawdata
+        method: GET
+        description: Get Meter Raw Data
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: start_date
+          in: query
+          type: string
+        - name: end_date
+          in: query
+          type: string
+      - name: createmeterrawdata
+        method: POST
+        description: Create Meter Datapoint
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+  exposes:
+  - type: rest
+    namespace: wegowise-usage-data-rest
+    port: 8080
+    description: REST adapter for WegoWise API — Usage Data. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/api/v1/wego-data/meters/{id}/latest-datum
+      name: api-v1-wego-data-meters-id-latest-datum
+      description: REST surface for api-v1-wego_data-meters-id-latest_datum.
+      operations:
+      - method: GET
+        name: getlatestdatum
+        description: Get Latest Meter Datapoint
+        call: wegowise-usage-data.getlatestdatum
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/v1/wego-data/meters/{id}/raw-data
+      name: api-v1-wego-data-meters-id-raw-data
+      description: REST surface for api-v1-wego_data-meters-id-raw_data.
+      operations:
+      - method: GET
+        name: getdatameterrawdata
+        description: Get Data Meter Raw Data
+        call: wegowise-usage-data.getdatameterrawdata
+        with:
+          start_date: rest.start_date
+          end_date: rest.end_date
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createdatameterrawdata
+        description: Create Data Meter Datapoint
+        call: wegowise-usage-data.createdatameterrawdata
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/v1/wego-pro/buildings/{id}/data
+      name: api-v1-wego-pro-buildings-id-data
+      description: REST surface for api-v1-wego_pro-buildings-id-data.
+      operations:
+      - method: GET
+        name: getbuildingdata
+        description: Get Building Usage Data
+        call: wegowise-usage-data.getbuildingdata
+        with:
+          data_type: rest.data_type
+          unit: rest.unit
+          start_date: rest.start_date
+          end_date: rest.end_date
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/v1/wego-pro/meters/{id}/data
+      name: api-v1-wego-pro-meters-id-data
+      description: REST surface for api-v1-wego_pro-meters-id-data.
+      operations:
+      - method: GET
+        name: getmeterdata
+        description: Get Meter Monthly Data
+        call: wegowise-usage-data.getmeterdata
+        with:
+          unit: rest.unit
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/v1/wego-pro/meters/{id}/raw-data
+      name: api-v1-wego-pro-meters-id-raw-data
+      description: REST surface for api-v1-wego_pro-meters-id-raw_data.
+      operations:
+      - method: GET
+        name: getmeterrawdata
+        description: Get Meter Raw Data
+        call: wegowise-usage-data.getmeterrawdata
+        with:
+          start_date: rest.start_date
+          end_date: rest.end_date
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createmeterrawdata
+        description: Create Meter Datapoint
+        call: wegowise-usage-data.createmeterrawdata
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: wegowise-usage-data-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for WegoWise API — Usage Data. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: get-latest-meter-datapoint
+      description: Get Latest Meter Datapoint
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: wegowise-usage-data.getlatestdatum
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-data-meter-raw-data
+      description: Get Data Meter Raw Data
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: wegowise-usage-data.getdatameterrawdata
+      with:
+        start_date: tools.start_date
+        end_date: tools.end_date
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-data-meter-datapoint
+      description: Create Data Meter Datapoint
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: wegowise-usage-data.createdatameterrawdata
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-building-usage-data
+      description: Get Building Usage Data
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: wegowise-usage-data.getbuildingdata
+      with:
+        data_type: tools.data_type
+        unit: tools.unit
+        start_date: tools.start_date
+        end_date: tools.end_date
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-meter-monthly-data
+      description: Get Meter Monthly Data
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: wegowise-usage-data.getmeterdata
+      with:
+        unit: tools.unit
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-meter-raw-data
+      description: Get Meter Raw Data
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: wegowise-usage-data.getmeterrawdata
+      with:
+        start_date: tools.start_date
+        end_date: tools.end_date
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-meter-datapoint
+      description: Create Meter Datapoint
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: wegowise-usage-data.createmeterrawdata
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
