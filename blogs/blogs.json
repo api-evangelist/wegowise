@@ -2,13 +2,13 @@
   "repo": "wegowise",
   "feeds": [
     {
-      "source": "http://blog.wegowise.com/",
-      "feed_url": "",
+      "source": "https://www.wegowise.com/compliance",
+      "feed_url": "https://www.wegowise.com/compliance",
       "title": "",
       "saved": 0,
-      "error": "no_feed"
+      "method": "none"
     }
   ],
-  "fetched": "2026-05-17T20:48:52Z",
+  "fetched": "2026-06-01T23:35:02Z",
   "post_count": 0
 }
