@@ -1,0 +1,772 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "WegoWise API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Utility Companies",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Supported Utility Companies",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.wegowise.com/api/v1/utility_companies",
+            "params": [
+              {
+                "name": "state",
+                "value": "",
+                "type": "query",
+                "description": "Filter by US state code (e.g., WI, IL, CA)"
+              },
+              {
+                "name": "data_type",
+                "value": "",
+                "type": "query",
+                "description": "Filter by utility data type"
+              }
+            ]
+          },
+          "docs": "Returns a list of utility companies that WegoWise can currently import data from automatically. Useful for looking up utility_company_id values when creating meters. No authentication required."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Buildings",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Buildings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.wegowise.com/api/v1/wego_pro/buildings"
+          },
+          "docs": "Returns a list of buildings that the authorized user has access to."
+        },
+        {
+          "info": {
+            "name": "Get Building",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.wegowise.com/api/v1/wego_pro/buildings/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource identifier"
+              }
+            ]
+          },
+          "docs": "Returns details for a specific building by ID."
+        },
+        {
+          "info": {
+            "name": "Update Building",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://www.wegowise.com/api/v1/wego_pro/buildings/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource identifier"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing building record."
+        },
+        {
+          "info": {
+            "name": "Delete Building",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://www.wegowise.com/api/v1/wego_pro/buildings/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource identifier"
+              }
+            ]
+          },
+          "docs": "Deletes a building and all associated data (cascades to apartments, meters, and data)."
+        },
+        {
+          "info": {
+            "name": "List Development Buildings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.wegowise.com/api/v1/wego_pro/developments/:id/buildings",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource identifier"
+              }
+            ]
+          },
+          "docs": "Returns all buildings belonging to a specific development."
+        },
+        {
+          "info": {
+            "name": "Create Building",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://www.wegowise.com/api/v1/wego_pro/developments/:id/buildings",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource identifier"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new building within a development."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Apartments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Apartments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.wegowise.com/api/v1/wego_pro/buildings/:id/apartments",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource identifier"
+              }
+            ]
+          },
+          "docs": "Returns all apartments within a specific building."
+        },
+        {
+          "info": {
+            "name": "Create Apartment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://www.wegowise.com/api/v1/wego_pro/buildings/:id/apartments",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource identifier"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new apartment within a building."
+        },
+        {
+          "info": {
+            "name": "Get Apartment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.wegowise.com/api/v1/wego_pro/apartments/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource identifier"
+              }
+            ]
+          },
+          "docs": "Returns details for a specific apartment."
+        },
+        {
+          "info": {
+            "name": "Update Apartment",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://www.wegowise.com/api/v1/wego_pro/apartments/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource identifier"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing apartment record."
+        },
+        {
+          "info": {
+            "name": "Delete Apartment",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://www.wegowise.com/api/v1/wego_pro/apartments/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource identifier"
+              }
+            ]
+          },
+          "docs": "Deletes an apartment and all associated meters and data."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Areas",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Commercial Areas",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.wegowise.com/api/v1/wego_pro/buildings/:id/areas",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource identifier"
+              }
+            ]
+          },
+          "docs": "Returns all commercial areas within a building."
+        },
+        {
+          "info": {
+            "name": "Create Commercial Area",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://www.wegowise.com/api/v1/wego_pro/buildings/:id/areas",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource identifier"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new commercial area within a building."
+        },
+        {
+          "info": {
+            "name": "Get Commercial Area",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.wegowise.com/api/v1/wego_pro/areas/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource identifier"
+              }
+            ]
+          },
+          "docs": "Returns details for a specific commercial area."
+        },
+        {
+          "info": {
+            "name": "Update Commercial Area",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://www.wegowise.com/api/v1/wego_pro/areas/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource identifier"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates a commercial area record."
+        },
+        {
+          "info": {
+            "name": "Delete Commercial Area",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://www.wegowise.com/api/v1/wego_pro/areas/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource identifier"
+              }
+            ]
+          },
+          "docs": "Deletes a commercial area and all associated data."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Meters",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Building Meters",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.wegowise.com/api/v1/wego_pro/buildings/:id/meters",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource identifier"
+              }
+            ]
+          },
+          "docs": "Returns all utility meters associated with a building."
+        },
+        {
+          "info": {
+            "name": "List Data Meters",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.wegowise.com/api/v1/wego_data/meters"
+          },
+          "docs": "Returns a list of meters that the authorized data-only user has access to."
+        },
+        {
+          "info": {
+            "name": "Create Data Meter",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://www.wegowise.com/api/v1/wego_data/meters",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new meter with utility company credentials for automated data import."
+        },
+        {
+          "info": {
+            "name": "Get Data Meter",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.wegowise.com/api/v1/wego_data/meters/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource identifier"
+              }
+            ]
+          },
+          "docs": "Returns details for a specific data meter."
+        },
+        {
+          "info": {
+            "name": "Update Data Meter",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://www.wegowise.com/api/v1/wego_data/meters/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource identifier"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates meter notes or nickname."
+        },
+        {
+          "info": {
+            "name": "Delete Data Meter",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://www.wegowise.com/api/v1/wego_data/meters/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource identifier"
+              }
+            ]
+          },
+          "docs": "Deletes a meter and all associated data."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Usage Data",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Building Usage Data",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.wegowise.com/api/v1/wego_pro/buildings/:id/data",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource identifier"
+              },
+              {
+                "name": "data_type",
+                "value": "",
+                "type": "query",
+                "description": "Filter by utility data type"
+              },
+              {
+                "name": "unit",
+                "value": "",
+                "type": "query",
+                "description": "Unit for returned values"
+              },
+              {
+                "name": "start_date",
+                "value": "",
+                "type": "query",
+                "description": "Start date for data range (YYYY-MM-DD)"
+              },
+              {
+                "name": "end_date",
+                "value": "",
+                "type": "query",
+                "description": "End date for data range (YYYY-MM-DD)"
+              }
+            ]
+          },
+          "docs": "Returns normalized monthly energy and water usage data for a building. Data is normalized to account for billing period differences."
+        },
+        {
+          "info": {
+            "name": "Get Meter Raw Data",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.wegowise.com/api/v1/wego_pro/meters/:id/raw_data",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource identifier"
+              },
+              {
+                "name": "start_date",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "end_date",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieves a collection of datapoints for a given meter. Returns all raw data including manually added datapoints and those imported from utility websites."
+        },
+        {
+          "info": {
+            "name": "Create Meter Datapoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://www.wegowise.com/api/v1/wego_pro/meters/:id/raw_data",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource identifier"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Manually creates a new utility usage datapoint for a meter."
+        },
+        {
+          "info": {
+            "name": "Get Meter Monthly Data",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.wegowise.com/api/v1/wego_pro/meters/:id/data",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource identifier"
+              },
+              {
+                "name": "unit",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Returns normalized monthly data for a specific meter."
+        },
+        {
+          "info": {
+            "name": "Get Data Meter Raw Data",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.wegowise.com/api/v1/wego_data/meters/:id/raw_data",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource identifier"
+              },
+              {
+                "name": "start_date",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "end_date",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieves all raw datapoints for a meter including manually added data and automatically imported utility data."
+        },
+        {
+          "info": {
+            "name": "Create Data Meter Datapoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://www.wegowise.com/api/v1/wego_data/meters/:id/raw_data",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource identifier"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Manually creates a utility usage datapoint for a data meter."
+        },
+        {
+          "info": {
+            "name": "Get Latest Meter Datapoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.wegowise.com/api/v1/wego_data/meters/:id/latest_datum",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource identifier"
+              }
+            ]
+          },
+          "docs": "Returns the most recent usage datapoint for a meter."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Developments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create Development",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://www.wegowise.com/api/v1/wego_pro/developments",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new development (portfolio group) for organizing buildings."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Utility Logins",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Utility Login Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.wegowise.com/api/v1/wego_data/utility_logins/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource identifier"
+              }
+            ]
+          },
+          "docs": "Returns login status and account information for automated data imports."
+        },
+        {
+          "info": {
+            "name": "Update Utility Login Credentials",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://www.wegowise.com/api/v1/wego_data/utility_logins/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource identifier"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the username and password for automated utility data import."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
