@@ -2,17 +2,11 @@
   "repo": "wegowise",
   "feeds": [
     {
-      "source": "http://blog.wegowise.com/rss.xml",
-      "error": "URLError"
-    },
-    {
-      "source": "https://www.wegowise.com/compliance",
-      "feed_url": "https://www.wegowise.com/compliance",
-      "title": "",
+      "source": "http://blog.wegowise.com/",
       "saved": 0,
-      "method": "none"
+      "error": "connect ECONNREFUSED 173.193.126.139:443"
     }
   ],
-  "fetched": "2026-06-14T20:42:17Z",
+  "fetched": "2026-06-27T13:22:18Z",
   "post_count": 0
 }
