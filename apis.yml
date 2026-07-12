@@ -98,6 +98,10 @@ apis:
       - type: Documentation
         url: https://www.wegowise.com/api/public
 common:
+  - type: DomainSecurity
+    url: security/wegowise-domain-security.yml
+  - type: Authentication
+    url: authentication/wegowise-authentication.yml
   - type: GitHubOrganization
     url: https://github.com/wegowise
   - type: LinkedIn

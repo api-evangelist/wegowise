@@ -1,0 +1,13 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/wegowise-openapi.yml
+summary:
+  types:
+  - http
+schemes:
+- name: oauth1
+  type: http
+  scheme: oauth
+  description: OAuth 1.0 authentication required for private endpoints
+  sources:
+  - openapi/wegowise-openapi.yml
