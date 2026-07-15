@@ -98,6 +98,8 @@ apis:
       - type: Documentation
         url: https://www.wegowise.com/api/public
 common:
+  - type: AgenticAccess
+    url: agentic-access/wegowise-agentic-access.yml
   - type: DomainSecurity
     url: security/wegowise-domain-security.yml
   - type: Authentication
