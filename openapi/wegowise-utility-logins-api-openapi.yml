@@ -1,0 +1,124 @@
+openapi: 3.1.0
+info:
+  title: WegoWise Apartments Utility Logins API
+  description: The WegoWise API (now Comply by Measurabl) is built on REST. It enables building owners, property managers, and energy service providers to programmatically manage their building portfolio, track utility meter data, and benchmark energy and water performance across multifamily and commercial properties. All responses are delivered as JSON. Authentication uses OAuth 1.0 for private endpoints.
+  version: 1.0.0
+  contact:
+    name: WegoWise Support
+    url: https://www.wegowise.com/
+  license:
+    name: Proprietary
+    url: https://www.wegowise.com/terms
+servers:
+- url: https://www.wegowise.com
+  description: WegoWise Production API
+security:
+- oauth1: []
+tags:
+- name: Utility Logins
+  description: Manage automated utility data import credentials
+paths:
+  /api/v1/wego_data/utility_logins/{id}:
+    get:
+      operationId: getUtilityLogin
+      summary: Get Utility Login Status
+      description: Returns login status and account information for automated data imports.
+      tags:
+      - Utility Logins
+      parameters:
+      - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: Utility login status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UtilityLogin'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    patch:
+      operationId: updateUtilityLogin
+      summary: Update Utility Login Credentials
+      description: Updates the username and password for automated utility data import.
+      tags:
+      - Utility Logins
+      parameters:
+      - $ref: '#/components/parameters/id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Updated utility login
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UtilityLogin'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  responses:
+    Unauthorized:
+      description: Authentication credentials missing or invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    UtilityLogin:
+      type: object
+      description: Utility website credentials for automated data import
+      properties:
+        id:
+          type: integer
+        utility_company_id:
+          type: integer
+        status:
+          type: string
+          enum:
+          - awaiting_import
+          - bad_login
+          - deferred
+          - in_progress
+          - inactive
+          - no_accounts
+          - site_error
+          - success
+          description: Current import status
+        username:
+          type: string
+        last_import_at:
+          type: string
+          format: date-time
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message
+        code:
+          type: integer
+  parameters:
+    id:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: Resource identifier
+  securitySchemes:
+    oauth1:
+      type: http
+      scheme: oauth
+      description: OAuth 1.0 authentication required for private endpoints
+externalDocs:
+  description: WegoWise API Documentation
+  url: https://www.wegowise.com/api

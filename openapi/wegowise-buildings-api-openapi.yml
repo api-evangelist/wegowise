@@ -1,0 +1,254 @@
+openapi: 3.1.0
+info:
+  title: WegoWise Apartments Buildings API
+  description: The WegoWise API (now Comply by Measurabl) is built on REST. It enables building owners, property managers, and energy service providers to programmatically manage their building portfolio, track utility meter data, and benchmark energy and water performance across multifamily and commercial properties. All responses are delivered as JSON. Authentication uses OAuth 1.0 for private endpoints.
+  version: 1.0.0
+  contact:
+    name: WegoWise Support
+    url: https://www.wegowise.com/
+  license:
+    name: Proprietary
+    url: https://www.wegowise.com/terms
+servers:
+- url: https://www.wegowise.com
+  description: WegoWise Production API
+security:
+- oauth1: []
+tags:
+- name: Buildings
+  description: Manage building records in a portfolio
+paths:
+  /api/v1/wego_pro/buildings:
+    get:
+      operationId: listBuildings
+      summary: List Buildings
+      description: Returns a list of buildings that the authorized user has access to.
+      tags:
+      - Buildings
+      responses:
+        '200':
+          description: List of buildings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Building'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /api/v1/wego_pro/buildings/{id}:
+    get:
+      operationId: getBuilding
+      summary: Get Building
+      description: Returns details for a specific building by ID.
+      tags:
+      - Buildings
+      parameters:
+      - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: Building details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Building'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      operationId: updateBuilding
+      summary: Update Building
+      description: Updates an existing building record.
+      tags:
+      - Buildings
+      parameters:
+      - $ref: '#/components/parameters/id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BuildingInput'
+      responses:
+        '200':
+          description: Updated building
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Building'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteBuilding
+      summary: Delete Building
+      description: Deletes a building and all associated data (cascades to apartments, meters, and data).
+      tags:
+      - Buildings
+      parameters:
+      - $ref: '#/components/parameters/id'
+      responses:
+        '204':
+          description: Building deleted successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /api/v1/wego_pro/developments/{id}/buildings:
+    get:
+      operationId: listDevelopmentBuildings
+      summary: List Development Buildings
+      description: Returns all buildings belonging to a specific development.
+      tags:
+      - Buildings
+      parameters:
+      - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: List of buildings in the development
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Building'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createBuilding
+      summary: Create Building
+      description: Creates a new building within a development.
+      tags:
+      - Buildings
+      parameters:
+      - $ref: '#/components/parameters/id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BuildingInput'
+      responses:
+        '201':
+          description: Building created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Building'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message
+        code:
+          type: integer
+    BuildingInput:
+      type: object
+      description: Input schema for creating or updating a building
+      properties:
+        name:
+          type: string
+        address:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        zip:
+          type: string
+        year_built:
+          type: integer
+        gross_area:
+          type: number
+        number_of_units:
+          type: integer
+      required:
+      - name
+      - address
+      - city
+      - state
+      - zip
+    Building:
+      type: object
+      description: A building in a WegoWise portfolio
+      properties:
+        id:
+          type: integer
+          description: Unique building identifier
+        name:
+          type: string
+          description: Building name
+        address:
+          type: string
+          description: Street address
+        city:
+          type: string
+        state:
+          type: string
+          description: US state abbreviation
+        zip:
+          type: string
+        year_built:
+          type: integer
+          description: Year the building was constructed
+        gross_area:
+          type: number
+          description: Total gross floor area in square feet
+        number_of_units:
+          type: integer
+          description: Number of residential units (apartments)
+        building_type:
+          type: string
+          enum:
+          - Multifamily
+          - Commercial
+          - Mixed-Use
+        development_id:
+          type: integer
+          description: ID of the parent development
+  responses:
+    Unauthorized:
+      description: Authentication credentials missing or invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Invalid request parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Requested resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    id:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: Resource identifier
+  securitySchemes:
+    oauth1:
+      type: http
+      scheme: oauth
+      description: OAuth 1.0 authentication required for private endpoints
+externalDocs:
+  description: WegoWise API Documentation
+  url: https://www.wegowise.com/api

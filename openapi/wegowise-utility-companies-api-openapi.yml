@@ -1,0 +1,93 @@
+openapi: 3.1.0
+info:
+  title: WegoWise Apartments Utility Companies API
+  description: The WegoWise API (now Comply by Measurabl) is built on REST. It enables building owners, property managers, and energy service providers to programmatically manage their building portfolio, track utility meter data, and benchmark energy and water performance across multifamily and commercial properties. All responses are delivered as JSON. Authentication uses OAuth 1.0 for private endpoints.
+  version: 1.0.0
+  contact:
+    name: WegoWise Support
+    url: https://www.wegowise.com/
+  license:
+    name: Proprietary
+    url: https://www.wegowise.com/terms
+servers:
+- url: https://www.wegowise.com
+  description: WegoWise Production API
+security:
+- oauth1: []
+tags:
+- name: Utility Companies
+  description: Public list of supported utility companies
+paths:
+  /api/v1/utility_companies:
+    get:
+      operationId: listUtilityCompanies
+      summary: List Supported Utility Companies
+      description: Returns a list of utility companies that WegoWise can currently import data from automatically. Useful for looking up utility_company_id values when creating meters. No authentication required.
+      tags:
+      - Utility Companies
+      security: []
+      parameters:
+      - name: state
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Filter by US state code (e.g., WI, IL, CA)
+      - name: data_type
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - Electric
+          - Gas
+          - Oil
+          - Water
+          - Steam
+          - Propane
+        description: Filter by utility data type
+      responses:
+        '200':
+          description: List of supported utility companies
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UtilityCompany'
+components:
+  schemas:
+    UtilityCompany:
+      type: object
+      description: A utility company supported for automated data import
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          description: Utility company name
+        data_type:
+          type: string
+          enum:
+          - Electric
+          - Gas
+          - Oil
+          - Water
+          - Steam
+        state:
+          type: string
+          description: US state code
+        country:
+          type: string
+          default: US
+        currency:
+          type: string
+          default: USD
+  securitySchemes:
+    oauth1:
+      type: http
+      scheme: oauth
+      description: OAuth 1.0 authentication required for private endpoints
+externalDocs:
+  description: WegoWise API Documentation
+  url: https://www.wegowise.com/api

@@ -1,0 +1,361 @@
+openapi: 3.1.0
+info:
+  title: WegoWise Apartments Usage Data API
+  description: The WegoWise API (now Comply by Measurabl) is built on REST. It enables building owners, property managers, and energy service providers to programmatically manage their building portfolio, track utility meter data, and benchmark energy and water performance across multifamily and commercial properties. All responses are delivered as JSON. Authentication uses OAuth 1.0 for private endpoints.
+  version: 1.0.0
+  contact:
+    name: WegoWise Support
+    url: https://www.wegowise.com/
+  license:
+    name: Proprietary
+    url: https://www.wegowise.com/terms
+servers:
+- url: https://www.wegowise.com
+  description: WegoWise Production API
+security:
+- oauth1: []
+tags:
+- name: Usage Data
+  description: Retrieve and submit raw and aggregated utility usage datapoints
+paths:
+  /api/v1/wego_pro/buildings/{id}/data:
+    get:
+      operationId: getBuildingData
+      summary: Get Building Usage Data
+      description: Returns normalized monthly energy and water usage data for a building. Data is normalized to account for billing period differences.
+      tags:
+      - Usage Data
+      parameters:
+      - $ref: '#/components/parameters/id'
+      - name: data_type
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - electric
+          - gas
+          - oil
+          - water
+          - steam
+          - propane
+        description: Filter by utility data type
+      - name: unit
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - kwh
+          - therms
+          - gallons
+          - btu
+          - total_charge
+        description: Unit for returned values
+      - name: start_date
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date
+        description: Start date for data range (YYYY-MM-DD)
+      - name: end_date
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date
+        description: End date for data range (YYYY-MM-DD)
+      responses:
+        '200':
+          description: Monthly usage data for the building
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageDataResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /api/v1/wego_pro/meters/{id}/raw_data:
+    get:
+      operationId: getMeterRawData
+      summary: Get Meter Raw Data
+      description: Retrieves a collection of datapoints for a given meter. Returns all raw data including manually added datapoints and those imported from utility websites.
+      tags:
+      - Usage Data
+      parameters:
+      - $ref: '#/components/parameters/id'
+      - name: start_date
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date
+      - name: end_date
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date
+      responses:
+        '200':
+          description: Raw meter datapoints
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RawDatapoint'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createMeterRawData
+      summary: Create Meter Datapoint
+      description: Manually creates a new utility usage datapoint for a meter.
+      tags:
+      - Usage Data
+      parameters:
+      - $ref: '#/components/parameters/id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RawDatapointInput'
+      responses:
+        '201':
+          description: Datapoint created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RawDatapoint'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /api/v1/wego_pro/meters/{id}/data:
+    get:
+      operationId: getMeterData
+      summary: Get Meter Monthly Data
+      description: Returns normalized monthly data for a specific meter.
+      tags:
+      - Usage Data
+      parameters:
+      - $ref: '#/components/parameters/id'
+      - name: unit
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - kwh
+          - therms
+          - gallons
+          - btu
+          - total_charge
+      responses:
+        '200':
+          description: Monthly meter data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageDataResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /api/v1/wego_data/meters/{id}/raw_data:
+    get:
+      operationId: getDataMeterRawData
+      summary: Get Data Meter Raw Data
+      description: Retrieves all raw datapoints for a meter including manually added data and automatically imported utility data.
+      tags:
+      - Usage Data
+      parameters:
+      - $ref: '#/components/parameters/id'
+      - name: start_date
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date
+      - name: end_date
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date
+      responses:
+        '200':
+          description: Raw meter datapoints
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RawDatapoint'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createDataMeterRawData
+      summary: Create Data Meter Datapoint
+      description: Manually creates a utility usage datapoint for a data meter.
+      tags:
+      - Usage Data
+      parameters:
+      - $ref: '#/components/parameters/id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RawDatapointInput'
+      responses:
+        '201':
+          description: Datapoint created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RawDatapoint'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /api/v1/wego_data/meters/{id}/latest_datum:
+    get:
+      operationId: getLatestDatum
+      summary: Get Latest Meter Datapoint
+      description: Returns the most recent usage datapoint for a meter.
+      tags:
+      - Usage Data
+      parameters:
+      - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: Latest datapoint
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RawDatapoint'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  schemas:
+    RawDatapointInput:
+      type: object
+      properties:
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        total_charge:
+          type: number
+        kwh:
+          type: number
+        btu:
+          type: number
+        gallons:
+          type: number
+      required:
+      - start_date
+      - end_date
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message
+        code:
+          type: integer
+    UsageDataResponse:
+      type: object
+      description: Monthly normalized usage data response
+      properties:
+        building_id:
+          type: integer
+        meter_id:
+          type: integer
+        data_type:
+          type: string
+        unit:
+          type: string
+        monthly_data:
+          type: array
+          items:
+            type: object
+            properties:
+              month:
+                type: string
+                format: date
+                description: First day of the month (YYYY-MM-01)
+              value:
+                type: number
+                description: Usage value in requested units
+              total_charge:
+                type: number
+    RawDatapoint:
+      type: object
+      description: A raw utility usage datapoint for a billing period
+      properties:
+        id:
+          type: integer
+        meter_id:
+          type: integer
+        start_date:
+          type: string
+          format: date
+          description: Start of the billing period
+        end_date:
+          type: string
+          format: date
+          description: End of the billing period
+        total_charge:
+          type: number
+          description: Total utility bill amount in USD
+        delivery_charge:
+          type: number
+          description: Delivery/distribution charge component
+        fixed_charge:
+          type: number
+          description: Fixed monthly charge component
+        fuel_charge:
+          type: number
+          description: Fuel cost component
+        kwh:
+          type: number
+          description: Electricity consumption in kWh (for electric meters)
+        btu:
+          type: number
+          description: Energy content in BTU (for gas/oil/steam/propane meters)
+        gallons:
+          type: number
+          description: Volume in gallons (for oil/water/propane/steam meters)
+        imported:
+          type: boolean
+          description: Whether this datapoint was imported automatically from the utility
+  responses:
+    Unauthorized:
+      description: Authentication credentials missing or invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Invalid request parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    id:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: Resource identifier
+  securitySchemes:
+    oauth1:
+      type: http
+      scheme: oauth
+      description: OAuth 1.0 authentication required for private endpoints
+externalDocs:
+  description: WegoWise API Documentation
+  url: https://www.wegowise.com/api

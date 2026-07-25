@@ -1,0 +1,245 @@
+openapi: 3.1.0
+info:
+  title: WegoWise Apartments Meters API
+  description: The WegoWise API (now Comply by Measurabl) is built on REST. It enables building owners, property managers, and energy service providers to programmatically manage their building portfolio, track utility meter data, and benchmark energy and water performance across multifamily and commercial properties. All responses are delivered as JSON. Authentication uses OAuth 1.0 for private endpoints.
+  version: 1.0.0
+  contact:
+    name: WegoWise Support
+    url: https://www.wegowise.com/
+  license:
+    name: Proprietary
+    url: https://www.wegowise.com/terms
+servers:
+- url: https://www.wegowise.com
+  description: WegoWise Production API
+security:
+- oauth1: []
+tags:
+- name: Meters
+  description: Track utility meters for buildings, apartments, and areas
+paths:
+  /api/v1/wego_pro/buildings/{id}/meters:
+    get:
+      operationId: listBuildingMeters
+      summary: List Building Meters
+      description: Returns all utility meters associated with a building.
+      tags:
+      - Meters
+      parameters:
+      - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: List of meters
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Meter'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /api/v1/wego_data/meters:
+    get:
+      operationId: listDataMeters
+      summary: List Data Meters
+      description: Returns a list of meters that the authorized data-only user has access to.
+      tags:
+      - Meters
+      responses:
+        '200':
+          description: List of meters
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Meter'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createDataMeter
+      summary: Create Data Meter
+      description: Creates a new meter with utility company credentials for automated data import.
+      tags:
+      - Meters
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeterInput'
+      responses:
+        '201':
+          description: Meter created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Meter'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /api/v1/wego_data/meters/{id}:
+    get:
+      operationId: getDataMeter
+      summary: Get Data Meter
+      description: Returns details for a specific data meter.
+      tags:
+      - Meters
+      parameters:
+      - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: Meter details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Meter'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    put:
+      operationId: updateDataMeter
+      summary: Update Data Meter
+      description: Updates meter notes or nickname.
+      tags:
+      - Meters
+      parameters:
+      - $ref: '#/components/parameters/id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                notes:
+                  type: string
+                nickname:
+                  type: string
+      responses:
+        '200':
+          description: Updated meter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Meter'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    delete:
+      operationId: deleteDataMeter
+      summary: Delete Data Meter
+      description: Deletes a meter and all associated data.
+      tags:
+      - Meters
+      parameters:
+      - $ref: '#/components/parameters/id'
+      responses:
+        '204':
+          description: Meter deleted
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  schemas:
+    MeterInput:
+      type: object
+      properties:
+        account_number:
+          type: string
+        utility_company_id:
+          type: integer
+        data_type:
+          type: string
+          enum:
+          - Electric
+          - Gas
+          - Oil
+          - Water
+          - Steam
+          - Propane
+          - Solar
+          - Trash
+        username:
+          type: string
+          description: Utility website login username for automated imports
+        password:
+          type: string
+          description: Utility website login password for automated imports
+      required:
+      - account_number
+      - utility_company_id
+      - data_type
+    Meter:
+      type: object
+      description: A utility meter tracking energy or water consumption
+      properties:
+        id:
+          type: integer
+        account_number:
+          type: string
+          description: Utility account number for this meter
+        data_type:
+          type: string
+          enum:
+          - Electric
+          - Gas
+          - Oil
+          - Water
+          - Steam
+          - Propane
+          - Solar
+          - Trash
+          description: Type of utility being measured
+        nickname:
+          type: string
+          description: Optional nickname for this meter
+        notes:
+          type: string
+        utility_company_id:
+          type: integer
+          description: ID of the utility company providing this service
+        building_id:
+          type: integer
+        apartment_id:
+          type: integer
+        area_id:
+          type: integer
+        last_import_date:
+          type: string
+          format: date
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message
+        code:
+          type: integer
+  responses:
+    Unauthorized:
+      description: Authentication credentials missing or invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Invalid request parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    id:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: Resource identifier
+  securitySchemes:
+    oauth1:
+      type: http
+      scheme: oauth
+      description: OAuth 1.0 authentication required for private endpoints
+externalDocs:
+  description: WegoWise API Documentation
+  url: https://www.wegowise.com/api

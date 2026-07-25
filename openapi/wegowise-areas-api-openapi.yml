@@ -1,0 +1,177 @@
+openapi: 3.1.0
+info:
+  title: WegoWise Apartments Areas API
+  description: The WegoWise API (now Comply by Measurabl) is built on REST. It enables building owners, property managers, and energy service providers to programmatically manage their building portfolio, track utility meter data, and benchmark energy and water performance across multifamily and commercial properties. All responses are delivered as JSON. Authentication uses OAuth 1.0 for private endpoints.
+  version: 1.0.0
+  contact:
+    name: WegoWise Support
+    url: https://www.wegowise.com/
+  license:
+    name: Proprietary
+    url: https://www.wegowise.com/terms
+servers:
+- url: https://www.wegowise.com
+  description: WegoWise Production API
+security:
+- oauth1: []
+tags:
+- name: Areas
+  description: Manage commercial building area records
+paths:
+  /api/v1/wego_pro/buildings/{id}/areas:
+    get:
+      operationId: listAreas
+      summary: List Commercial Areas
+      description: Returns all commercial areas within a building.
+      tags:
+      - Areas
+      parameters:
+      - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: List of commercial areas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Area'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createArea
+      summary: Create Commercial Area
+      description: Creates a new commercial area within a building.
+      tags:
+      - Areas
+      parameters:
+      - $ref: '#/components/parameters/id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AreaInput'
+      responses:
+        '201':
+          description: Area created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Area'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /api/v1/wego_pro/areas/{id}:
+    get:
+      operationId: getArea
+      summary: Get Commercial Area
+      description: Returns details for a specific commercial area.
+      tags:
+      - Areas
+      parameters:
+      - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: Area details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Area'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    put:
+      operationId: updateArea
+      summary: Update Commercial Area
+      description: Updates a commercial area record.
+      tags:
+      - Areas
+      parameters:
+      - $ref: '#/components/parameters/id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AreaInput'
+      responses:
+        '200':
+          description: Updated area
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Area'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    delete:
+      operationId: deleteArea
+      summary: Delete Commercial Area
+      description: Deletes a commercial area and all associated data.
+      tags:
+      - Areas
+      parameters:
+      - $ref: '#/components/parameters/id'
+      responses:
+        '204':
+          description: Area deleted successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  schemas:
+    Area:
+      type: object
+      description: A commercial area or space within a building
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          description: Area name or tenant name
+        building_id:
+          type: integer
+        area_type:
+          type: string
+          description: Type of commercial space
+        square_footage:
+          type: number
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message
+        code:
+          type: integer
+    AreaInput:
+      type: object
+      properties:
+        name:
+          type: string
+        area_type:
+          type: string
+        square_footage:
+          type: number
+      required:
+      - name
+  responses:
+    Unauthorized:
+      description: Authentication credentials missing or invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    id:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: Resource identifier
+  securitySchemes:
+    oauth1:
+      type: http
+      scheme: oauth
+      description: OAuth 1.0 authentication required for private endpoints
+externalDocs:
+  description: WegoWise API Documentation
+  url: https://www.wegowise.com/api

@@ -1,0 +1,94 @@
+openapi: 3.1.0
+info:
+  title: WegoWise Apartments Developments API
+  description: The WegoWise API (now Comply by Measurabl) is built on REST. It enables building owners, property managers, and energy service providers to programmatically manage their building portfolio, track utility meter data, and benchmark energy and water performance across multifamily and commercial properties. All responses are delivered as JSON. Authentication uses OAuth 1.0 for private endpoints.
+  version: 1.0.0
+  contact:
+    name: WegoWise Support
+    url: https://www.wegowise.com/
+  license:
+    name: Proprietary
+    url: https://www.wegowise.com/terms
+servers:
+- url: https://www.wegowise.com
+  description: WegoWise Production API
+security:
+- oauth1: []
+tags:
+- name: Developments
+  description: Manage development (property portfolio group) records
+paths:
+  /api/v1/wego_pro/developments:
+    post:
+      operationId: createDevelopment
+      summary: Create Development
+      description: Creates a new development (portfolio group) for organizing buildings.
+      tags:
+      - Developments
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DevelopmentInput'
+      responses:
+        '201':
+          description: Development created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Development'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message
+        code:
+          type: integer
+    DevelopmentInput:
+      type: object
+      properties:
+        name:
+          type: string
+      required:
+      - name
+    Development:
+      type: object
+      description: A development groups multiple buildings in a portfolio
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        owner_username:
+          type: string
+        building_count:
+          type: integer
+  responses:
+    Unauthorized:
+      description: Authentication credentials missing or invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Invalid request parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    oauth1:
+      type: http
+      scheme: oauth
+      description: OAuth 1.0 authentication required for private endpoints
+externalDocs:
+  description: WegoWise API Documentation
+  url: https://www.wegowise.com/api
