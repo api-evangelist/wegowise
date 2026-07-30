@@ -7,9 +7,22 @@ description: >-
   tracking, utility meter data import, and normalized monthly usage analytics across multifamily and commercial
   properties.
 type: Index
+accessModel:
+  pricing: enterprise
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Enterprise · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
 position: Consumer
 access: 3rd-Party
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/wegowise.png
 tags:
   - Benchmarking
   - Building Energy
@@ -22,81 +35,204 @@ modified: '2026-05-19'
 url: https://raw.githubusercontent.com/api-evangelist/wegowise/refs/heads/main/apis.yml
 specificationVersion: '0.19'
 apis:
-  - aid: wegowise:wegowise
-    name: WegoWise API
-    description: >-
-      The WegoWise REST API (now Comply API) for managing building portfolios, utility meters, and energy data. Supports
-      buildings, apartments, commercial areas, developments, meters, and raw usage datapoints. Authenticated via OAuth
-      1.0.
-    humanURL: https://www.wegowise.com/api
-    baseUrl: https://www.wegowise.com
-    tags:
-      - Apartments
-      - Benchmarking
-      - Buildings
-      - Developments
-      - Energy Data
-      - Meters
-      - REST
-      - Utility Companies
-      - Water Data
-    properties:
-      - type: Documentation
-        url: https://www.wegowise.com/api
-      - type: OpenAPI
-        url: openapi/wegowise-openapi.yml
-      - type: JSONSchema
-        url: json-schema/wegowise-building-schema.json
-      - type: JSONSchema
-        url: json-schema/wegowise-meter-schema.json
-      - type: JSONStructure
-        url: json-structure/wegowise-building-structure.json
-      - type: JSONLD
-        url: json-ld/wegowise-context.jsonld
-  - aid: wegowise:wegowise-pro
-    name: WegoWise Pro API
-    description: >-
-      The WegoPro API for multifamily and commercial property portfolios. Provides endpoints for buildings, apartments,
-      areas, meters, raw data, and monthly normalized usage data. The primary API for property managers.
-    humanURL: https://www.wegowise.com/api/wego_pro
-    baseUrl: https://www.wegowise.com/api/v1/wego_pro
-    tags:
-      - Apartments
-      - Buildings
-      - Commercial Areas
-      - Multifamily
-      - Pro
-    properties:
-      - type: Documentation
-        url: https://www.wegowise.com/api/wego_pro
-  - aid: wegowise:wegowise-data
-    name: WegoWise Data API
-    description: >-
-      The WegoData API for data-only accounts. Enables meter management and automated utility data import without the
-      full building structure hierarchy. Supports all utility types: Electric, Gas, Oil, Water, Steam, Propane, Solar.
-    humanURL: https://www.wegowise.com/api/wego_data
-    baseUrl: https://www.wegowise.com/api/v1/wego_data
-    tags:
-      - Automated Import
-      - Data Only
-      - Meters
-      - Utility Data
-    properties:
-      - type: Documentation
-        url: https://www.wegowise.com/api/wego_data
-  - aid: wegowise:wegowise-public
-    name: WegoWise Public API
-    description: >-
-      Public endpoints accessible without authentication. Provides a list of utility companies supported for automated
-      data import, useful for finding utility_company_id values when configuring meters.
-    humanURL: https://www.wegowise.com/api/public
-    baseUrl: https://www.wegowise.com/api/v1
-    tags:
-      - Public
-      - Utility Companies
-    properties:
-      - type: Documentation
-        url: https://www.wegowise.com/api/public
+- aid: wegowise:wegowise-pro
+  name: WegoWise Pro API
+  description: >-
+    The WegoPro API for multifamily and commercial property portfolios. Provides endpoints for buildings,
+    apartments, areas, meters, raw data, and monthly normalized usage data. The primary API for property
+    managers.
+  humanURL: https://www.wegowise.com/api/wego_pro
+  baseUrl: https://www.wegowise.com/api/v1/wego_pro
+  tags:
+  - Apartments
+  - Buildings
+  - Commercial Areas
+  - Multifamily
+  - Pro
+  properties:
+  - type: Documentation
+    url: https://www.wegowise.com/api/wego_pro
+- aid: wegowise:wegowise-data
+  name: WegoWise Data API
+  description: >-
+    The WegoData API for data-only accounts. Enables meter management and automated utility data import
+    without the full building structure hierarchy. Supports all utility types: Electric, Gas, Oil, Water,
+    Steam, Propane, Solar.
+  humanURL: https://www.wegowise.com/api/wego_data
+  baseUrl: https://www.wegowise.com/api/v1/wego_data
+  tags:
+  - Automated Import
+  - Data Only
+  - Meters
+  - Utility Data
+  properties:
+  - type: Documentation
+    url: https://www.wegowise.com/api/wego_data
+- aid: wegowise:wegowise-public
+  name: WegoWise Public API
+  description: >-
+    Public endpoints accessible without authentication. Provides a list of utility companies supported
+    for automated data import, useful for finding utility_company_id values when configuring meters.
+  humanURL: https://www.wegowise.com/api/public
+  baseUrl: https://www.wegowise.com/api/v1
+  tags:
+  - Public
+  - Utility Companies
+  properties:
+  - type: Documentation
+    url: https://www.wegowise.com/api/public
+- aid: wegowise:wegowise-apartments-api
+  name: WegoWise Apartments API
+  description: Manage apartment and unit records within buildings
+  humanURL: https://www.wegowise.com/api
+  tags:
+  - Apartments
+  properties:
+  - type: OpenAPI
+    url: openapi/wegowise-apartments-api-openapi.yml
+  - type: Documentation
+    url: https://www.wegowise.com/api
+  - type: JSONSchema
+    url: json-schema/wegowise-building-schema.json
+  - type: JSONSchema
+    url: json-schema/wegowise-meter-schema.json
+  - type: JSONStructure
+    url: json-structure/wegowise-building-structure.json
+  - type: JSONLD
+    url: json-ld/wegowise-context.jsonld
+- aid: wegowise:wegowise-areas-api
+  name: WegoWise Areas API
+  description: Manage commercial building area records
+  humanURL: https://www.wegowise.com/api
+  tags:
+  - Areas
+  properties:
+  - type: OpenAPI
+    url: openapi/wegowise-areas-api-openapi.yml
+  - type: Documentation
+    url: https://www.wegowise.com/api
+  - type: JSONSchema
+    url: json-schema/wegowise-building-schema.json
+  - type: JSONSchema
+    url: json-schema/wegowise-meter-schema.json
+  - type: JSONStructure
+    url: json-structure/wegowise-building-structure.json
+  - type: JSONLD
+    url: json-ld/wegowise-context.jsonld
+- aid: wegowise:wegowise-buildings-api
+  name: WegoWise Buildings API
+  description: Manage building records in a portfolio
+  humanURL: https://www.wegowise.com/api
+  tags:
+  - Buildings
+  properties:
+  - type: OpenAPI
+    url: openapi/wegowise-buildings-api-openapi.yml
+  - type: Documentation
+    url: https://www.wegowise.com/api
+  - type: JSONSchema
+    url: json-schema/wegowise-building-schema.json
+  - type: JSONSchema
+    url: json-schema/wegowise-meter-schema.json
+  - type: JSONStructure
+    url: json-structure/wegowise-building-structure.json
+  - type: JSONLD
+    url: json-ld/wegowise-context.jsonld
+- aid: wegowise:wegowise-developments-api
+  name: WegoWise Developments API
+  description: Manage development (property portfolio group) records
+  humanURL: https://www.wegowise.com/api
+  tags:
+  - Developments
+  properties:
+  - type: OpenAPI
+    url: openapi/wegowise-developments-api-openapi.yml
+  - type: Documentation
+    url: https://www.wegowise.com/api
+  - type: JSONSchema
+    url: json-schema/wegowise-building-schema.json
+  - type: JSONSchema
+    url: json-schema/wegowise-meter-schema.json
+  - type: JSONStructure
+    url: json-structure/wegowise-building-structure.json
+  - type: JSONLD
+    url: json-ld/wegowise-context.jsonld
+- aid: wegowise:wegowise-meters-api
+  name: WegoWise Meters API
+  description: Track utility meters for buildings, apartments, and areas
+  humanURL: https://www.wegowise.com/api
+  tags:
+  - Meters
+  properties:
+  - type: OpenAPI
+    url: openapi/wegowise-meters-api-openapi.yml
+  - type: Documentation
+    url: https://www.wegowise.com/api
+  - type: JSONSchema
+    url: json-schema/wegowise-building-schema.json
+  - type: JSONSchema
+    url: json-schema/wegowise-meter-schema.json
+  - type: JSONStructure
+    url: json-structure/wegowise-building-structure.json
+  - type: JSONLD
+    url: json-ld/wegowise-context.jsonld
+- aid: wegowise:wegowise-usage-data-api
+  name: WegoWise Usage Data API
+  description: Retrieve and submit raw and aggregated utility usage datapoints
+  humanURL: https://www.wegowise.com/api
+  tags:
+  - Usage Data
+  properties:
+  - type: OpenAPI
+    url: openapi/wegowise-usage-data-api-openapi.yml
+  - type: Documentation
+    url: https://www.wegowise.com/api
+  - type: JSONSchema
+    url: json-schema/wegowise-building-schema.json
+  - type: JSONSchema
+    url: json-schema/wegowise-meter-schema.json
+  - type: JSONStructure
+    url: json-structure/wegowise-building-structure.json
+  - type: JSONLD
+    url: json-ld/wegowise-context.jsonld
+- aid: wegowise:wegowise-utility-companies-api
+  name: WegoWise Utility Companies API
+  description: Public list of supported utility companies
+  humanURL: https://www.wegowise.com/api
+  tags:
+  - Utility Companies
+  properties:
+  - type: OpenAPI
+    url: openapi/wegowise-utility-companies-api-openapi.yml
+  - type: Documentation
+    url: https://www.wegowise.com/api
+  - type: JSONSchema
+    url: json-schema/wegowise-building-schema.json
+  - type: JSONSchema
+    url: json-schema/wegowise-meter-schema.json
+  - type: JSONStructure
+    url: json-structure/wegowise-building-structure.json
+  - type: JSONLD
+    url: json-ld/wegowise-context.jsonld
+- aid: wegowise:wegowise-utility-logins-api
+  name: WegoWise Utility Logins API
+  description: Manage automated utility data import credentials
+  humanURL: https://www.wegowise.com/api
+  tags:
+  - Utility Logins
+  properties:
+  - type: OpenAPI
+    url: openapi/wegowise-utility-logins-api-openapi.yml
+  - type: Documentation
+    url: https://www.wegowise.com/api
+  - type: JSONSchema
+    url: json-schema/wegowise-building-schema.json
+  - type: JSONSchema
+    url: json-schema/wegowise-meter-schema.json
+  - type: JSONStructure
+    url: json-structure/wegowise-building-structure.json
+  - type: JSONLD
+    url: json-ld/wegowise-context.jsonld
 common:
   - type: AgenticAccess
     url: agentic-access/wegowise-agentic-access.yml
