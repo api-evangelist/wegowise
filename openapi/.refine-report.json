@@ -1,0 +1,28 @@
+{
+  "provider": "wegowise",
+  "sources": [
+    "wegowise-apartments-api-openapi.yml",
+    "wegowise-areas-api-openapi.yml",
+    "wegowise-buildings-api-openapi.yml",
+    "wegowise-developments-api-openapi.yml",
+    "wegowise-meters-api-openapi.yml",
+    "wegowise-usage-data-api-openapi.yml",
+    "wegowise-utility-companies-api-openapi.yml",
+    "wegowise-utility-logins-api-openapi.yml"
+  ],
+  "outputs": [
+    "wegowise-apartments-api-openapi.yml",
+    "wegowise-areas-api-openapi.yml",
+    "wegowise-buildings-api-openapi.yml",
+    "wegowise-developments-api-openapi.yml",
+    "wegowise-meters-api-openapi.yml",
+    "wegowise-usage-data-api-openapi.yml",
+    "wegowise-utility-companies-api-openapi.yml",
+    "wegowise-utility-logins-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
