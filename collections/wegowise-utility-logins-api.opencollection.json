@@ -1,0 +1,60 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "WegoWise Apartments Utility Logins API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Utility Logins",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Utility Login Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.wegowise.com/api/v1/wego_data/utility_logins/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource identifier"
+              }
+            ]
+          },
+          "docs": "Returns login status and account information for automated data imports."
+        },
+        {
+          "info": {
+            "name": "Update Utility Login Credentials",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://www.wegowise.com/api/v1/wego_data/utility_logins/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource identifier"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the username and password for automated utility data import."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,124 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "WegoWise Apartments Meters API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Meters",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Building Meters",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.wegowise.com/api/v1/wego_pro/buildings/:id/meters",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource identifier"
+              }
+            ]
+          },
+          "docs": "Returns all utility meters associated with a building."
+        },
+        {
+          "info": {
+            "name": "List Data Meters",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.wegowise.com/api/v1/wego_data/meters"
+          },
+          "docs": "Returns a list of meters that the authorized data-only user has access to."
+        },
+        {
+          "info": {
+            "name": "Create Data Meter",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://www.wegowise.com/api/v1/wego_data/meters",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new meter with utility company credentials for automated data import."
+        },
+        {
+          "info": {
+            "name": "Get Data Meter",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.wegowise.com/api/v1/wego_data/meters/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource identifier"
+              }
+            ]
+          },
+          "docs": "Returns details for a specific data meter."
+        },
+        {
+          "info": {
+            "name": "Update Data Meter",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://www.wegowise.com/api/v1/wego_data/meters/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource identifier"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates meter notes or nickname."
+        },
+        {
+          "info": {
+            "name": "Delete Data Meter",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://www.wegowise.com/api/v1/wego_data/meters/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource identifier"
+              }
+            ]
+          },
+          "docs": "Deletes a meter and all associated data."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

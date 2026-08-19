@@ -1,0 +1,121 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "WegoWise Apartments Areas API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Areas",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Commercial Areas",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.wegowise.com/api/v1/wego_pro/buildings/:id/areas",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource identifier"
+              }
+            ]
+          },
+          "docs": "Returns all commercial areas within a building."
+        },
+        {
+          "info": {
+            "name": "Create Commercial Area",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://www.wegowise.com/api/v1/wego_pro/buildings/:id/areas",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource identifier"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new commercial area within a building."
+        },
+        {
+          "info": {
+            "name": "Get Commercial Area",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.wegowise.com/api/v1/wego_pro/areas/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource identifier"
+              }
+            ]
+          },
+          "docs": "Returns details for a specific commercial area."
+        },
+        {
+          "info": {
+            "name": "Update Commercial Area",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://www.wegowise.com/api/v1/wego_pro/areas/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource identifier"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates a commercial area record."
+        },
+        {
+          "info": {
+            "name": "Delete Commercial Area",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://www.wegowise.com/api/v1/wego_pro/areas/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource identifier"
+              }
+            ]
+          },
+          "docs": "Deletes a commercial area and all associated data."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

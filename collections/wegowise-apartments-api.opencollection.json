@@ -1,0 +1,121 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "WegoWise Apartments API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Apartments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Apartments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.wegowise.com/api/v1/wego_pro/buildings/:id/apartments",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource identifier"
+              }
+            ]
+          },
+          "docs": "Returns all apartments within a specific building."
+        },
+        {
+          "info": {
+            "name": "Create Apartment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://www.wegowise.com/api/v1/wego_pro/buildings/:id/apartments",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource identifier"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new apartment within a building."
+        },
+        {
+          "info": {
+            "name": "Get Apartment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.wegowise.com/api/v1/wego_pro/apartments/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource identifier"
+              }
+            ]
+          },
+          "docs": "Returns details for a specific apartment."
+        },
+        {
+          "info": {
+            "name": "Update Apartment",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://www.wegowise.com/api/v1/wego_pro/apartments/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource identifier"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing apartment record."
+        },
+        {
+          "info": {
+            "name": "Delete Apartment",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://www.wegowise.com/api/v1/wego_pro/apartments/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource identifier"
+              }
+            ]
+          },
+          "docs": "Deletes an apartment and all associated meters and data."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

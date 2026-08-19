@@ -1,0 +1,132 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "WegoWise Apartments Buildings API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Buildings",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Buildings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.wegowise.com/api/v1/wego_pro/buildings"
+          },
+          "docs": "Returns a list of buildings that the authorized user has access to."
+        },
+        {
+          "info": {
+            "name": "Get Building",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.wegowise.com/api/v1/wego_pro/buildings/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource identifier"
+              }
+            ]
+          },
+          "docs": "Returns details for a specific building by ID."
+        },
+        {
+          "info": {
+            "name": "Update Building",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://www.wegowise.com/api/v1/wego_pro/buildings/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource identifier"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing building record."
+        },
+        {
+          "info": {
+            "name": "Delete Building",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://www.wegowise.com/api/v1/wego_pro/buildings/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource identifier"
+              }
+            ]
+          },
+          "docs": "Deletes a building and all associated data (cascades to apartments, meters, and data)."
+        },
+        {
+          "info": {
+            "name": "List Development Buildings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.wegowise.com/api/v1/wego_pro/developments/:id/buildings",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource identifier"
+              }
+            ]
+          },
+          "docs": "Returns all buildings belonging to a specific development."
+        },
+        {
+          "info": {
+            "name": "Create Building",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://www.wegowise.com/api/v1/wego_pro/developments/:id/buildings",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource identifier"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new building within a development."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

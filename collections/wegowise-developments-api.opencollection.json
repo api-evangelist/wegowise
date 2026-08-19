@@ -1,0 +1,33 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "WegoWise Apartments Developments API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Developments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create Development",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://www.wegowise.com/api/v1/wego_pro/developments",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new development (portfolio group) for organizing buildings."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

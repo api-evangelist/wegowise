@@ -1,0 +1,153 @@
+{
+  "item": [
+    {
+      "id": "e1c4001b-f07f-43fe-95f1-577c14daad56",
+      "name": "Utility Companies",
+      "description": {
+        "content": "Public list of supported utility companies",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "7de01b32-4d62-44a4-8d2b-7974a651b517",
+          "name": "List Supported Utility Companies",
+          "request": {
+            "name": "List Supported Utility Companies",
+            "description": {
+              "content": "Returns a list of utility companies that WegoWise can currently import data from automatically. Useful for looking up utility_company_id values when creating meters. No authentication required.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "utility_companies"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "state",
+                  "value": "<string>",
+                  "description": "Filter by US state code (e.g., WI, IL, CA)"
+                },
+                {
+                  "disabled": false,
+                  "key": "data_type",
+                  "value": "<string>",
+                  "description": "Filter by utility data type"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "6cad87b1-2cd7-4d89-af61-937f40dd6a36",
+              "name": "List of supported utility companies",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "utility_companies"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "state",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "data_type",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth1",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "OAuth <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": 5987,\n    \"name\": \"string\",\n    \"data_type\": \"Gas\",\n    \"state\": \"string\",\n    \"country\": \"US\",\n    \"currency\": \"USD\"\n  },\n  {\n    \"id\": 3046,\n    \"name\": \"string\",\n    \"data_type\": \"Water\",\n    \"state\": \"string\",\n    \"country\": \"US\",\n    \"currency\": \"USD\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://www.wegowise.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "oauth1",
+    "oauth1": [
+      {
+        "key": "consumerSecret",
+        "value": "{{consumerSecret}}"
+      },
+      {
+        "key": "consumerKey",
+        "value": "{{consumerKey}}"
+      },
+      {
+        "key": "addParamsToHeader",
+        "value": true
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "d1240811-7b63-4def-aa0f-dea3756023d5",
+    "name": "WegoWise Apartments Utility Companies API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The WegoWise API (now Comply by Measurabl) is built on REST. It enables building owners, property managers, and energy service providers to programmatically manage their building portfolio, track utility meter data, and benchmark energy and water performance across multifamily and commercial properties. All responses are delivered as JSON. Authentication uses OAuth 1.0 for private endpoints.\n\nContact Support:\n Name: WegoWise Support",
+      "type": "text/plain"
+    }
+  }
+}
