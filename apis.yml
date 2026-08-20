@@ -48,6 +48,12 @@ apis:
   - Buildings
   - Commercial Areas
   - Multifamily
+  - PRO
+  tags_raw:
+  - Apartments
+  - Buildings
+  - Commercial Areas
+  - Multifamily
   - Pro
   properties:
   - type: Documentation
