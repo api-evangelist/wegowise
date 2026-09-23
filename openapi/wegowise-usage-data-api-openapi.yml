@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: WegoWise Apartments Usage Data API
+  title: WegoWise Usage Data API
   description: The WegoWise API (now Comply by Measurabl) is built on REST. It enables building owners, property managers, and energy service providers to programmatically manage their building portfolio, track utility meter data, and benchmark energy and water performance across multifamily and commercial properties. All responses are delivered as JSON. Authentication uses OAuth 1.0 for private endpoints.
   version: 1.0.0
   contact:
@@ -235,7 +235,54 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
+  parameters:
+    id:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: Resource identifier
+  responses:
+    Unauthorized:
+      description: Authentication credentials missing or invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Invalid request parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
+    UsageDataResponse:
+      type: object
+      description: Monthly normalized usage data response
+      properties:
+        building_id:
+          type: integer
+        meter_id:
+          type: integer
+        data_type:
+          type: string
+        unit:
+          type: string
+        monthly_data:
+          type: array
+          items:
+            type: object
+            properties:
+              month:
+                type: string
+                format: date
+                description: First day of the month (YYYY-MM-01)
+              value:
+                type: number
+                description: Usage value in requested units
+              total_charge:
+                type: number
     RawDatapointInput:
       type: object
       properties:
@@ -264,32 +311,6 @@ components:
           description: Error message
         code:
           type: integer
-    UsageDataResponse:
-      type: object
-      description: Monthly normalized usage data response
-      properties:
-        building_id:
-          type: integer
-        meter_id:
-          type: integer
-        data_type:
-          type: string
-        unit:
-          type: string
-        monthly_data:
-          type: array
-          items:
-            type: object
-            properties:
-              month:
-                type: string
-                format: date
-                description: First day of the month (YYYY-MM-01)
-              value:
-                type: number
-                description: Usage value in requested units
-              total_charge:
-                type: number
     RawDatapoint:
       type: object
       description: A raw utility usage datapoint for a billing period
@@ -330,27 +351,6 @@ components:
         imported:
           type: boolean
           description: Whether this datapoint was imported automatically from the utility
-  responses:
-    Unauthorized:
-      description: Authentication credentials missing or invalid
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Invalid request parameters
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-  parameters:
-    id:
-      name: id
-      in: path
-      required: true
-      schema:
-        type: integer
-      description: Resource identifier
   securitySchemes:
     oauth1:
       type: http

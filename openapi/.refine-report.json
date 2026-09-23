@@ -1,14 +1,7 @@
 {
   "provider": "wegowise",
   "sources": [
-    "wegowise-apartments-api-openapi.yml",
-    "wegowise-areas-api-openapi.yml",
-    "wegowise-buildings-api-openapi.yml",
-    "wegowise-developments-api-openapi.yml",
-    "wegowise-meters-api-openapi.yml",
-    "wegowise-usage-data-api-openapi.yml",
-    "wegowise-utility-companies-api-openapi.yml",
-    "wegowise-utility-logins-api-openapi.yml"
+    "_original/wegowise-openapi.yml"
   ],
   "outputs": [
     "wegowise-apartments-api-openapi.yml",
@@ -23,6 +16,19 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "wegowise-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "wegowise-apartments-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "wegowise-areas-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "wegowise-buildings-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "wegowise-developments-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "wegowise-meters-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "wegowise-usage-data-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "wegowise-utility-companies-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "wegowise-utility-logins-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }
