@@ -235,82 +235,7 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  parameters:
-    id:
-      name: id
-      in: path
-      required: true
-      schema:
-        type: integer
-      description: Resource identifier
-  responses:
-    Unauthorized:
-      description: Authentication credentials missing or invalid
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Invalid request parameters
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
-    UsageDataResponse:
-      type: object
-      description: Monthly normalized usage data response
-      properties:
-        building_id:
-          type: integer
-        meter_id:
-          type: integer
-        data_type:
-          type: string
-        unit:
-          type: string
-        monthly_data:
-          type: array
-          items:
-            type: object
-            properties:
-              month:
-                type: string
-                format: date
-                description: First day of the month (YYYY-MM-01)
-              value:
-                type: number
-                description: Usage value in requested units
-              total_charge:
-                type: number
-    RawDatapointInput:
-      type: object
-      properties:
-        start_date:
-          type: string
-          format: date
-        end_date:
-          type: string
-          format: date
-        total_charge:
-          type: number
-        kwh:
-          type: number
-        btu:
-          type: number
-        gallons:
-          type: number
-      required:
-      - start_date
-      - end_date
-    Error:
-      type: object
-      properties:
-        error:
-          type: string
-          description: Error message
-        code:
-          type: integer
     RawDatapoint:
       type: object
       description: A raw utility usage datapoint for a billing period
@@ -351,6 +276,81 @@ components:
         imported:
           type: boolean
           description: Whether this datapoint was imported automatically from the utility
+    RawDatapointInput:
+      type: object
+      properties:
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        total_charge:
+          type: number
+        kwh:
+          type: number
+        btu:
+          type: number
+        gallons:
+          type: number
+      required:
+      - start_date
+      - end_date
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message
+        code:
+          type: integer
+    UsageDataResponse:
+      type: object
+      description: Monthly normalized usage data response
+      properties:
+        building_id:
+          type: integer
+        meter_id:
+          type: integer
+        data_type:
+          type: string
+        unit:
+          type: string
+        monthly_data:
+          type: array
+          items:
+            type: object
+            properties:
+              month:
+                type: string
+                format: date
+                description: First day of the month (YYYY-MM-01)
+              value:
+                type: number
+                description: Usage value in requested units
+              total_charge:
+                type: number
+  responses:
+    Unauthorized:
+      description: Authentication credentials missing or invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Invalid request parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    id:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: Resource identifier
   securitySchemes:
     oauth1:
       type: http

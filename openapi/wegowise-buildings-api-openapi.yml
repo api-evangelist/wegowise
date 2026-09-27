@@ -144,14 +144,6 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  parameters:
-    id:
-      name: id
-      in: path
-      required: true
-      schema:
-        type: integer
-      description: Resource identifier
   responses:
     Unauthorized:
       description: Authentication credentials missing or invalid
@@ -244,6 +236,14 @@ components:
         development_id:
           type: integer
           description: ID of the parent development
+  parameters:
+    id:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: Resource identifier
   securitySchemes:
     oauth1:
       type: http
