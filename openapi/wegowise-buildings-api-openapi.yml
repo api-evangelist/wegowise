@@ -190,14 +190,6 @@ components:
       - city
       - state
       - zip
-    Error:
-      type: object
-      properties:
-        error:
-          type: string
-          description: Error message
-        code:
-          type: integer
     Building:
       type: object
       description: A building in a WegoWise portfolio
@@ -236,6 +228,14 @@ components:
         development_id:
           type: integer
           description: ID of the parent development
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message
+        code:
+          type: integer
   parameters:
     id:
       name: id

@@ -236,6 +236,26 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
+    RawDatapointInput:
+      type: object
+      properties:
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        total_charge:
+          type: number
+        kwh:
+          type: number
+        btu:
+          type: number
+        gallons:
+          type: number
+      required:
+      - start_date
+      - end_date
     RawDatapoint:
       type: object
       description: A raw utility usage datapoint for a billing period
@@ -276,26 +296,6 @@ components:
         imported:
           type: boolean
           description: Whether this datapoint was imported automatically from the utility
-    RawDatapointInput:
-      type: object
-      properties:
-        start_date:
-          type: string
-          format: date
-        end_date:
-          type: string
-          format: date
-        total_charge:
-          type: number
-        kwh:
-          type: number
-        btu:
-          type: number
-        gallons:
-          type: number
-      required:
-      - start_date
-      - end_date
     Error:
       type: object
       properties:
@@ -331,14 +331,14 @@ components:
               total_charge:
                 type: number
   responses:
-    Unauthorized:
-      description: Authentication credentials missing or invalid
+    BadRequest:
+      description: Invalid request parameters
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Invalid request parameters
+    Unauthorized:
+      description: Authentication credentials missing or invalid
       content:
         application/json:
           schema:

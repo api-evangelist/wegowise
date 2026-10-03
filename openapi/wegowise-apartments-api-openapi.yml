@@ -139,14 +139,6 @@ components:
           type: integer
         occupants:
           type: integer
-    Error:
-      type: object
-      properties:
-        error:
-          type: string
-          description: Error message
-        code:
-          type: integer
     ApartmentInput:
       type: object
       properties:
@@ -158,6 +150,14 @@ components:
           type: integer
       required:
       - unit_number
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message
+        code:
+          type: integer
   responses:
     Unauthorized:
       description: Authentication credentials missing or invalid
