@@ -139,7 +139,56 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
+  parameters:
+    id:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: Resource identifier
+  responses:
+    BadRequest:
+      description: Invalid request parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Authentication credentials missing or invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
+    MeterInput:
+      type: object
+      properties:
+        account_number:
+          type: string
+        utility_company_id:
+          type: integer
+        data_type:
+          type: string
+          enum:
+          - Electric
+          - Gas
+          - Oil
+          - Water
+          - Steam
+          - Propane
+          - Solar
+          - Trash
+        username:
+          type: string
+          description: Utility website login username for automated imports
+        password:
+          type: string
+          description: Utility website login password for automated imports
+      required:
+      - account_number
+      - utility_company_id
+      - data_type
     Meter:
       type: object
       description: A utility meter tracking energy or water consumption
@@ -178,34 +227,6 @@ components:
         last_import_date:
           type: string
           format: date
-    MeterInput:
-      type: object
-      properties:
-        account_number:
-          type: string
-        utility_company_id:
-          type: integer
-        data_type:
-          type: string
-          enum:
-          - Electric
-          - Gas
-          - Oil
-          - Water
-          - Steam
-          - Propane
-          - Solar
-          - Trash
-        username:
-          type: string
-          description: Utility website login username for automated imports
-        password:
-          type: string
-          description: Utility website login password for automated imports
-      required:
-      - account_number
-      - utility_company_id
-      - data_type
     Error:
       type: object
       properties:
@@ -214,27 +235,6 @@ components:
           description: Error message
         code:
           type: integer
-  responses:
-    BadRequest:
-      description: Invalid request parameters
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Authentication credentials missing or invalid
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-  parameters:
-    id:
-      name: id
-      in: path
-      required: true
-      schema:
-        type: integer
-      description: Resource identifier
   securitySchemes:
     oauth1:
       type: http

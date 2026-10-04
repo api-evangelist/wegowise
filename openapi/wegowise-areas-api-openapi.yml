@@ -116,23 +116,15 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
+  parameters:
+    id:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: Resource identifier
   schemas:
-    Area:
-      type: object
-      description: A commercial area or space within a building
-      properties:
-        id:
-          type: integer
-        name:
-          type: string
-          description: Area name or tenant name
-        building_id:
-          type: integer
-        area_type:
-          type: string
-          description: Type of commercial space
-        square_footage:
-          type: number
     AreaInput:
       type: object
       properties:
@@ -152,6 +144,22 @@ components:
           description: Error message
         code:
           type: integer
+    Area:
+      type: object
+      description: A commercial area or space within a building
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          description: Area name or tenant name
+        building_id:
+          type: integer
+        area_type:
+          type: string
+          description: Type of commercial space
+        square_footage:
+          type: number
   responses:
     Unauthorized:
       description: Authentication credentials missing or invalid
@@ -159,14 +167,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-  parameters:
-    id:
-      name: id
-      in: path
-      required: true
-      schema:
-        type: integer
-      description: Resource identifier
   securitySchemes:
     oauth1:
       type: http

@@ -120,25 +120,15 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
+  parameters:
+    id:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: Resource identifier
   schemas:
-    Apartment:
-      type: object
-      description: An apartment or residential unit within a building
-      properties:
-        id:
-          type: integer
-        unit_number:
-          type: string
-          description: Unit designation (e.g., "1A", "203")
-        building_id:
-          type: integer
-        area:
-          type: number
-          description: Unit area in square feet
-        bedrooms:
-          type: integer
-        occupants:
-          type: integer
     ApartmentInput:
       type: object
       properties:
@@ -158,13 +148,25 @@ components:
           description: Error message
         code:
           type: integer
+    Apartment:
+      type: object
+      description: An apartment or residential unit within a building
+      properties:
+        id:
+          type: integer
+        unit_number:
+          type: string
+          description: Unit designation (e.g., "1A", "203")
+        building_id:
+          type: integer
+        area:
+          type: number
+          description: Unit area in square feet
+        bedrooms:
+          type: integer
+        occupants:
+          type: integer
   responses:
-    Unauthorized:
-      description: Authentication credentials missing or invalid
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     BadRequest:
       description: Invalid request parameters
       content:
@@ -177,14 +179,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-  parameters:
-    id:
-      name: id
-      in: path
-      required: true
-      schema:
-        type: integer
-      description: Resource identifier
+    Unauthorized:
+      description: Authentication credentials missing or invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     oauth1:
       type: http

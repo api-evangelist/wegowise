@@ -43,34 +43,6 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  schemas:
-    Development:
-      type: object
-      description: A development groups multiple buildings in a portfolio
-      properties:
-        id:
-          type: integer
-        name:
-          type: string
-        owner_username:
-          type: string
-        building_count:
-          type: integer
-    DevelopmentInput:
-      type: object
-      properties:
-        name:
-          type: string
-      required:
-      - name
-    Error:
-      type: object
-      properties:
-        error:
-          type: string
-          description: Error message
-        code:
-          type: integer
   responses:
     BadRequest:
       description: Invalid request parameters
@@ -84,6 +56,34 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+  schemas:
+    DevelopmentInput:
+      type: object
+      properties:
+        name:
+          type: string
+      required:
+      - name
+    Development:
+      type: object
+      description: A development groups multiple buildings in a portfolio
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        owner_username:
+          type: string
+        building_count:
+          type: integer
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message
+        code:
+          type: integer
   securitySchemes:
     oauth1:
       type: http
