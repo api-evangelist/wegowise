@@ -153,8 +153,8 @@ components:
         type: integer
       description: Resource identifier
   responses:
-    BadRequest:
-      description: Invalid request parameters
+    Unauthorized:
+      description: Authentication credentials missing or invalid
       content:
         application/json:
           schema:
@@ -165,39 +165,13 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Authentication credentials missing or invalid
+    BadRequest:
+      description: Invalid request parameters
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
   schemas:
-    BuildingInput:
-      type: object
-      description: Input schema for creating or updating a building
-      properties:
-        name:
-          type: string
-        address:
-          type: string
-        city:
-          type: string
-        state:
-          type: string
-        zip:
-          type: string
-        year_built:
-          type: integer
-        gross_area:
-          type: number
-        number_of_units:
-          type: integer
-      required:
-      - name
-      - address
-      - city
-      - state
-      - zip
     Building:
       type: object
       description: A building in a WegoWise portfolio
@@ -236,6 +210,32 @@ components:
         development_id:
           type: integer
           description: ID of the parent development
+    BuildingInput:
+      type: object
+      description: Input schema for creating or updating a building
+      properties:
+        name:
+          type: string
+        address:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        zip:
+          type: string
+        year_built:
+          type: integer
+        gross_area:
+          type: number
+        number_of_units:
+          type: integer
+      required:
+      - name
+      - address
+      - city
+      - state
+      - zip
     Error:
       type: object
       properties:

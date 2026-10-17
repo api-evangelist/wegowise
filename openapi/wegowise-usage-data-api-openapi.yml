@@ -244,19 +244,45 @@ components:
         type: integer
       description: Resource identifier
   responses:
-    BadRequest:
-      description: Invalid request parameters
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     Unauthorized:
       description: Authentication credentials missing or invalid
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Invalid request parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
+    UsageDataResponse:
+      type: object
+      description: Monthly normalized usage data response
+      properties:
+        building_id:
+          type: integer
+        meter_id:
+          type: integer
+        data_type:
+          type: string
+        unit:
+          type: string
+        monthly_data:
+          type: array
+          items:
+            type: object
+            properties:
+              month:
+                type: string
+                format: date
+                description: First day of the month (YYYY-MM-01)
+              value:
+                type: number
+                description: Usage value in requested units
+              total_charge:
+                type: number
     RawDatapointInput:
       type: object
       properties:
@@ -317,32 +343,6 @@ components:
         imported:
           type: boolean
           description: Whether this datapoint was imported automatically from the utility
-    UsageDataResponse:
-      type: object
-      description: Monthly normalized usage data response
-      properties:
-        building_id:
-          type: integer
-        meter_id:
-          type: integer
-        data_type:
-          type: string
-        unit:
-          type: string
-        monthly_data:
-          type: array
-          items:
-            type: object
-            properties:
-              month:
-                type: string
-                format: date
-                description: First day of the month (YYYY-MM-01)
-              value:
-                type: number
-                description: Usage value in requested units
-              total_charge:
-                type: number
     Error:
       type: object
       properties:
